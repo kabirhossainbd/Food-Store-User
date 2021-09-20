@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Food Store</string>
+    <string name="facebook_app_id">563462498108804</string>
+    <string name="fb_login_protocol_scheme">fb563462498108804</string>
+</resources>
