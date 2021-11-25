@@ -81,9 +81,9 @@ class CartProvider extends ChangeNotifier {
   }
 
 
-  bool existAnotherRestaurantProduct(int restaurantID) {
+  bool existAnotherCompanyProduct(int companyID) {
     for(CartModel cartModel in _cartList) {
-      if(cartModel.product.restaurantId != restaurantID) {
+      if(cartModel.product.companyId != companyID) {
         return true;
       }
     }

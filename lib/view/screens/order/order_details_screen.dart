@@ -41,7 +41,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   void _loadData(BuildContext context) async {
     await Provider.of<OrderProvider>(context, listen: false).trackOrder(widget.orderId.toString(), widget.orderModel, context, false);
     if(widget.orderModel == null) {
-      await Provider.of<SplashProvider>(context, listen: false).initConfig(_scaffold);
+      await Provider.of<SplashProvider>(context, listen: false).initConfig(_scaffold, context);
     }
     await Provider.of<LocationProvider>(context, listen: false).initAddressList(context);
     Provider.of<OrderProvider>(context, listen: false).getOrderDetails(widget.orderId.toString(), context);
@@ -180,7 +180,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   onTap: () {
                                     showDialog(context: context, barrierDismissible: false, builder: (context) => ChangeMethodDialog(
                                       orderID: order.trackModel.id.toString(), callback: (String message, bool isSuccess) {
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: isSuccess ? Colors.green : Colors.red));
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: isSuccess ? Colors.green : Theme.of(context).primaryColor));
                                       },
                                     ));
                                   },
@@ -415,7 +415,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         onTap: () async {
                           if(ResponsiveHelper.isWeb()) {
                             String hostname = html.window.location.hostname;
-                            String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=${order.trackModel.id}&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel.id}'
+                            String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=${order.trackModel.id}&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel.data.id}'
                                 '&&callback=http://$hostname${Routes.ORDER_SUCCESS_SCREEN}/${order.trackModel.id}';
                             html.window.open(selectedUrl, "_self");
                           }else {

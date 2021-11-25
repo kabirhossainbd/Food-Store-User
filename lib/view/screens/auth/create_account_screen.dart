@@ -7,6 +7,7 @@ import 'package:flutter_restaurant/provider/wishlist_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
+import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/custom_text_field.dart';
@@ -22,11 +23,13 @@ class CreateAccountScreen extends StatelessWidget {
   final FocusNode _numberFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   final FocusNode _confirmPasswordFocus = FocusNode();
+  final FocusNode _referFocus = FocusNode();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _referController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +61,6 @@ class CreateAccountScreen extends StatelessWidget {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
-                        hintText: 'John',
                         isShowBorder: true,
                         controller: _firstNameController,
                         focusNode: _firstNameFocus,
@@ -75,7 +77,6 @@ class CreateAccountScreen extends StatelessWidget {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
-                        hintText: 'Doe',
                         isShowBorder: true,
                         controller: _lastNameController,
                         focusNode: _lastNameFocus,
@@ -85,14 +86,13 @@ class CreateAccountScreen extends StatelessWidget {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
-                      // for email section
+                      // for mobile section
                       Text(
                         getTranslated('mobile_number', context),
                         style: Theme.of(context).textTheme.headline2.copyWith(color: ColorResources.getHintColor(context)),
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
-                        hintText: getTranslated('number_hint', context),
                         isShowBorder: true,
                         controller: _numberController,
                         focusNode: _numberFocus,
@@ -101,6 +101,7 @@ class CreateAccountScreen extends StatelessWidget {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
+
                       // for password section
                       Text(
                         getTranslated('password', context),
@@ -108,7 +109,6 @@ class CreateAccountScreen extends StatelessWidget {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
-                        hintText: getTranslated('password_hint', context),
                         isShowBorder: true,
                         isPassword: true,
                         controller: _passwordController,
@@ -125,7 +125,6 @@ class CreateAccountScreen extends StatelessWidget {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
-                        hintText: getTranslated('password_hint', context),
                         isShowBorder: true,
                         isPassword: true,
                         controller: _confirmPasswordController,
@@ -133,6 +132,27 @@ class CreateAccountScreen extends StatelessWidget {
                         isShowSuffixIcon: true,
                         inputAction: TextInputAction.done,
                       ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
+
+                      // for refer section
+
+                      RichText(
+                        text: TextSpan(text: '${getTranslated('refer code', context)} : ', style: Theme.of(context).textTheme.headline2.copyWith(color: ColorResources.getHintColor(context)),
+                            children: [
+                              TextSpan(
+                                  text: '(${getTranslated('optional', context)})',style: rubikRegular.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.FONT_SIZE_SMALL)
+                              ),
+                            ]),
+                      ),
+                      SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                      CustomTextField(
+                        isShowBorder: true,
+                        controller: _referController,
+                        focusNode: _referFocus,
+                        inputType: TextInputType.text,
+                        inputAction: TextInputAction.done,
+                      ),
+
 
                       SizedBox(height: 22),
                       Row(
@@ -165,6 +185,7 @@ class CreateAccountScreen extends StatelessWidget {
                                 String _number = _numberController.text.trim();
                                 String _password = _passwordController.text.trim();
                                 String _confirmPassword = _confirmPasswordController.text.trim();
+                                String _refer = _referController.text.trim();
                                 if (_firstName.isEmpty) {
                                   showCustomSnackBar(getTranslated('enter_first_name', context), context);
                                 }else if (_lastName.isEmpty) {
@@ -186,6 +207,7 @@ class CreateAccountScreen extends StatelessWidget {
                                     email: email,
                                     password: _password,
                                     phone: _number,
+                                    refer_id: _refer,
                                   );
                                   authProvider.registration(signUpModel).then((status) async {
                                     if (status.isSuccess) {

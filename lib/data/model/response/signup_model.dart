@@ -4,8 +4,10 @@ class SignUpModel {
   String phone;
   String email;
   String password;
+  String refer_id;
 
-  SignUpModel({this.fName, this.lName, this.phone, this.email='', this.password});
+
+  SignUpModel({this.fName, this.lName, this.phone, this.email='', this.password, this.refer_id});
 
   SignUpModel.fromJson(Map<String, dynamic> json) {
     fName = json['f_name'];
@@ -13,6 +15,7 @@ class SignUpModel {
     phone = json['phone'];
     email = json['email'];
     password = json['password'];
+    refer_id = json['refer_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +25,7 @@ class SignUpModel {
     data['phone'] = this.phone;
     data['email'] = this.email;
     data['password'] = this.password;
+    data['refer_id'] = this.refer_id;
     return data;
   }
 }

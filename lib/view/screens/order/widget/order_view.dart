@@ -37,6 +37,7 @@ class OrderView extends StatelessWidget {
               await Provider.of<OrderProvider>(context, listen: false).getOrderList(context);
             },
             backgroundColor: Theme.of(context).primaryColor,
+            color: ColorResources.COLOR_WHITE,
             child: Scrollbar(
               child: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
@@ -53,7 +54,7 @@ class OrderView extends StatelessWidget {
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                           margin: EdgeInsets.only(bottom: Dimensions.PADDING_SIZE_SMALL),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
+                            color: ColorResources.getBackgroundColor(context),
                             boxShadow: [BoxShadow(
                               color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],
                               spreadRadius: 1, blurRadius: 5,
@@ -158,6 +159,7 @@ class OrderView extends StatelessWidget {
                                           amount: orderList[index].orderAmount,
                                           orderType: orderList[index].orderType,
                                           couponCode: orderList[index].couponDiscountTitle ?? '',
+
                                         ),
                                       );
                                     }

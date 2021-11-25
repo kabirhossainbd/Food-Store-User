@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
 import 'package:flutter_restaurant/view/base/mars_menu_bar.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +77,7 @@ class MenuBar extends StatelessWidget {
       //color: Colors.white,
     width: 800,
       child: PlutoMenuBar(
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: ColorResources.getBackgroundColor(context),
         gradient: false,
         goBackButtonText: 'Back',
         textStyle: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),

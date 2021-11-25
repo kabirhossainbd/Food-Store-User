@@ -18,11 +18,13 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  TextEditingController _emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _emailController = TextEditingController();
 
     return Scaffold(
+      backgroundColor: ColorResources.getBackgroundColor(context),
       appBar: CustomAppBar(context: context, title: getTranslated('forgot_password', context)),
       body: Scrollbar(
         child: SingleChildScrollView(
@@ -62,11 +64,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: getTranslated('demo_gmail', context),
+                              hintText: '',
                               isShowBorder: true,
-                              controller: _emailController,
-                              inputType: TextInputType.emailAddress,
                               inputAction: TextInputAction.done,
+                              inputType: TextInputType.emailAddress,
+                              controller: _emailController,
                             ),
                             SizedBox(height: 24),
                             !auth.isForgotPasswordLoading ? CustomButton(

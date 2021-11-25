@@ -125,15 +125,20 @@ class SearchResultScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ) : NoDataScreen() : GridView.builder(
-                      itemCount: 10,//searchProvider.searchProductList.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 5,
-                        childAspectRatio: 3,
-                        crossAxisCount: ResponsiveHelper.isDesktop(context) ? 4 : ResponsiveHelper.isTab(context) ? 3 : 1,
+                    ) : NoDataScreen() : Center(
+                      child: SizedBox(
+                        width: 1170,
+                        child: GridView.builder(
+                          itemCount: ResponsiveHelper.isDesktop(context) ? 20 : 10,//searchProvider.searchProductList.length,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5,
+                            childAspectRatio: 3,
+                            crossAxisCount: ResponsiveHelper.isDesktop(context) ? 4 : ResponsiveHelper.isTab(context) ? 3 : 1,
+                          ),
+                          itemBuilder: (context, index) => ProductShimmer(isEnabled: searchProvider.searchProductList == null),
+                        ),
                       ),
-                      itemBuilder: (context, index) => ProductShimmer(isEnabled: searchProvider.searchProductList == null),
                     ),
                   )
                 ],

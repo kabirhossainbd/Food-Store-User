@@ -9,6 +9,8 @@ import 'package:flutter_restaurant/data/model/response/order_model.dart';
 import 'package:flutter_restaurant/data/model/response/timeslote_model.dart';
 import 'package:flutter_restaurant/data/repository/order_repo.dart';
 import 'package:flutter_restaurant/helper/api_checker.dart';
+import 'package:flutter_restaurant/provider/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrderProvider extends ChangeNotifier {
   final OrderRepo orderRepo;

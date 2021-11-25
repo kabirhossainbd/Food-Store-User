@@ -36,9 +36,9 @@ class NotificationDialog extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: FadeInImage.assetNetwork(
-                  placeholder: Images.placeholder_banner, height: 150, width: MediaQuery.of(context).size.width, fit: BoxFit.cover,
+                  placeholder: Images.placeholder_image, height: 150, width: MediaQuery.of(context).size.width, fit: BoxFit.cover,
                   image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.notificationImageUrl}/${notificationModel.image}',
-                  imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_banner, height: 150, width: MediaQuery.of(context).size.width, fit: BoxFit.cover),
+                  imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_image, height: 150, width: MediaQuery.of(context).size.width, fit: BoxFit.cover),
                 ),
               ),
             ),

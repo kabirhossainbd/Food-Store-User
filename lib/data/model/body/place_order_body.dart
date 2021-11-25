@@ -10,16 +10,18 @@ class PlaceOrderBody {
   int _deliveryAddressId;
   String _paymentMethod;
   String _orderNote;
-  int _couponCode;
+  String _couponCode;
   String _deliveryTime;
   String _deliveryDate;
   int _branchId;
+  int _companyId;
+  int _restaurantId;
 
   PlaceOrderBody(
       {@required List<Cart> cart,
         @required double couponDiscountAmount,
         @required String couponDiscountTitle,
-        @required int couponCode,
+        @required String couponCode,
         @required double orderAmount,
         @required int deliveryAddressId,
         @required String orderType,
@@ -27,7 +29,9 @@ class PlaceOrderBody {
         @required int branchId,
         @required String deliveryTime,
         @required String deliveryDate,
-        @required String orderNote}) {
+        @required String orderNote,
+        @required int companyId,
+        @required int restaurantId,}) {
     this._cart = cart;
     this._couponDiscountAmount = couponDiscountAmount;
     this._couponDiscountTitle = couponDiscountTitle;
@@ -40,6 +44,8 @@ class PlaceOrderBody {
     this._deliveryTime = deliveryTime;
     this._deliveryDate = deliveryDate;
     this._branchId = branchId;
+    this._companyId = companyId;
+    this._restaurantId = restaurantId;
   }
 
   List<Cart> get cart => _cart;
@@ -50,10 +56,12 @@ class PlaceOrderBody {
   int get deliveryAddressId => _deliveryAddressId;
   String get paymentMethod => _paymentMethod;
   String get orderNote => _orderNote;
-  int get couponCode => _couponCode;
+  String get couponCode => _couponCode;
   String get deliveryTime => _deliveryTime;
   String get deliveryDate => _deliveryDate;
   int get branchId => _branchId;
+  int get companyId => _companyId;
+  int get restaurantId => _restaurantId;
 
   PlaceOrderBody.fromJson(Map<String, dynamic> json) {
     if (json['cart'] != null) {
@@ -73,6 +81,8 @@ class PlaceOrderBody {
     _deliveryTime = json['delivery_time'];
     _deliveryDate = json['delivery_date'];
     _branchId = json['branch_id'];
+    _companyId = json['company_id'];
+    _restaurantId = json['restaurant_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -91,6 +101,8 @@ class PlaceOrderBody {
     data['delivery_time'] = this._deliveryTime;
     data['delivery_date'] = this._deliveryDate;
     data['branch_id'] = this._branchId;
+    data['company_id'] = this._companyId;
+    data['restaurant_id'] = this._restaurantId;
     return data;
   }
 }
@@ -98,9 +110,10 @@ class PlaceOrderBody {
 class Cart {
   int _productId;
   int _companyId;
+  int _restaurantId;
   String _price;
   String _variant;
-  List<Variation> _variation;
+  List<Variations> _variation;
   double _discountAmount;
   int _quantity;
   double _taxAmount;
@@ -110,9 +123,10 @@ class Cart {
   Cart(
       int productId,
       int companyId,
+      int restaurantId,
       String price,
       String variant,
-      List<Variation> variation,
+      List<Variations> variation,
       double discountAmount,
       int quantity,
       double taxAmount,
@@ -120,6 +134,7 @@ class Cart {
       List<int> addOnQtys) {
     this._productId = productId;
     this._companyId = companyId;
+    this._restaurantId = restaurantId;
     this._price = price;
     this._variant = variant;
     this._variation = variation;
@@ -132,9 +147,10 @@ class Cart {
 
   int get productId => _productId;
   int get companyId => _companyId;
+  int get restaurantId => _restaurantId;
   String get price => _price;
   String get variant => _variant;
-  List<Variation> get variation => _variation;
+  List<Variations> get variation => _variation;
   double get discountAmount => _discountAmount;
   int get quantity => _quantity;
   double get taxAmount => _taxAmount;
@@ -144,12 +160,13 @@ class Cart {
   Cart.fromJson(Map<String, dynamic> json) {
     _productId = json['product_id'];
     _companyId = json['company_id'];
+    _restaurantId = json['restaurant_id'];
     _price = json['price'];
     _variant = json['variant'];
     if (json['variation'] != null) {
       _variation = [];
       json['variation'].forEach((v) {
-        _variation.add(new Variation.fromJson(v));
+        _variation.add(new Variations.fromJson(v));
       });
     }
     _discountAmount = json['discount_amount'];
@@ -163,6 +180,7 @@ class Cart {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['product_id'] = this._productId;
     data['company_id'] = this._companyId;
+    data['restaurant_id'] = this._restaurantId;
     data['price'] = this._price;
     data['variant'] = this._variant;
     if (this._variation != null) {

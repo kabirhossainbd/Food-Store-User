@@ -34,7 +34,7 @@ class _OrderScreenState extends State<OrderScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: ColorResources.getBackgroundColor(context),
       appBar: CustomAppBar(context: context, title: getTranslated('my_order', context), isBackButtonExist: !ResponsiveHelper.isMobile(context)),
       body: _isLoggedIn ? Consumer<OrderProvider>(
         builder: (context, order, child) {
@@ -43,7 +43,7 @@ class _OrderScreenState extends State<OrderScreen> with TickerProviderStateMixin
             Center(
               child: Container(
                 width: 1170,
-                color: Theme.of(context).accentColor,
+                color: ColorResources.getBackgroundColor(context),
                 child: TabBar(
                   controller: _tabController,
                   labelColor: Theme.of(context).textTheme.bodyText1.color,

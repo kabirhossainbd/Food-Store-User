@@ -39,7 +39,7 @@ class ProductReviewWidget extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: Dimensions.PADDING_SIZE_SMALL),
                       decoration: BoxDecoration(
                         boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 1, blurRadius: 2, offset: Offset(0, 1))],
-                        color: Theme.of(context).accentColor,
+                        color: ColorResources.getBackgroundColor(context),
                         borderRadius: BorderRadius.circular(Dimensions.PADDING_SIZE_SMALL),
                       ),
                       child: Column(
@@ -63,7 +63,7 @@ class ProductReviewWidget extends StatelessWidget {
                                 children: [
                                   Text(orderDetailsList[index].productDetails.name, style: rubikMedium, maxLines: 2, overflow: TextOverflow.ellipsis),
                                   SizedBox(height: 10),
-                                  Text(PriceConverter.convertPrice(context, orderDetailsList[index].productDetails.price), style: rubikBold),
+                                  Text(PriceConverter.convertPrice(context, orderDetailsList[index].productDetails.price.toDouble()), style: rubikBold),
                                 ],
                               )),
                               Row(children: [
@@ -150,7 +150,7 @@ class ProductReviewWidget extends StatelessWidget {
                                         }
                                         ReviewBody reviewBody = ReviewBody(
                                           productId: orderDetailsList[index].productId.toString(),
-                                          rating: productProvider.ratingList[index].toString(),
+                                           rating: productProvider.ratingList[index].toString(),
                                           comment: productProvider.reviewList[index],
                                           orderId: orderDetailsList[index].orderId.toString(),
                                         );

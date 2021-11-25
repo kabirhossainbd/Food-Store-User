@@ -6,15 +6,13 @@ import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/data/model/response/response_model.dart';
 import 'package:flutter_restaurant/data/repository/product_repo.dart';
-import 'package:flutter_restaurant/helper/api_checker.dart';
 
 class ProductProvider extends ChangeNotifier {
   final ProductRepo productRepo;
-
   ProductProvider({@required this.productRepo});
 
   // Latest products
-  List<Product> _popularProductList;
+  List<Products> _popularProductList;
   bool _isLoading = false;
   int _popularPageSize;
   List<String> _offsetList = [];
@@ -22,7 +20,7 @@ class ProductProvider extends ChangeNotifier {
   int _quantity = 1;
   List<bool> _addOnActiveList = [];
   List<int> _addOnQtyList = [];
-  List<Product> get popularProductList => _popularProductList;
+  List<Products> get popularProductList => _popularProductList;
   bool get isLoading => _isLoading;
   int get popularPageSize => _popularPageSize;
   List<int> get variationIndex => _variationIndex;
@@ -61,7 +59,7 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void initData(Product product, CartModel cart) {
+  void initData(Products product, CartModel cart) {
     _variationIndex = [];
     _addOnQtyList = [];
     _addOnActiveList = [];
@@ -130,6 +128,16 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int _reviewIndex = 0;
+  int get reviewIndex => _reviewIndex;
+  int _rating= 0;
+  int get ratting => _rating;
+  String _errorText;
+  String get errorText => _errorText;
+  bool _submit = true;
+  bool get submit => _submit;
+
+
   List<int> _ratingList = [];
   List<String> _reviewList = [];
   List<bool> _loadingList = [];
@@ -161,6 +169,24 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void getRating(int rate) {
+    _rating = rate;
+    notifyListeners();
+  }
+
+  void setErrorText(String error) {
+    _errorText = error;
+    notifyListeners();
+  }
+
+  void removeError() {
+    _errorText = null;
+    notifyListeners();
+  }
+
+
+
+
   void setReview(int index, String review) {
     _reviewList[index] = review;
   }
@@ -190,6 +216,30 @@ class ProductProvider extends ChangeNotifier {
       responseModel = ResponseModel(false, errorMessage);
     }
     _loadingList[index] = false;
+    notifyListeners();
+    return responseModel;
+  }
+
+  Future<ResponseModel> submitHomeReview(ReviewBody reviewBody) async {
+    _isLoading = true;
+    notifyListeners();
+
+    ApiResponse apiResponse = await productRepo.submitReview(reviewBody);
+    ResponseModel responseModel;
+    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      _rating = 0;
+      responseModel = ResponseModel(true, 'Review submitted successfully');
+      notifyListeners();
+    } else {
+      String errorMessage;
+      if(apiResponse.error is String) {
+        errorMessage = apiResponse.error.toString();
+      }else {
+        errorMessage = apiResponse.error.errors[0].message;
+      }
+      responseModel = ResponseModel(false, errorMessage);
+    }
+    _isLoading = false;
     notifyListeners();
     return responseModel;
   }

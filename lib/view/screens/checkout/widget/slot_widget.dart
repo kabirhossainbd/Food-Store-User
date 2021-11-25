@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/provider/theme_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,7 @@ class SlotWidget extends StatelessWidget {
           ),
           child: Text(
             title,
-            style: rubikRegular.copyWith(color: isSelected ? Theme.of(context).cardColor : Theme.of(context).textTheme.bodyText1.color),
+            style: rubikRegular.copyWith(color: isSelected ? ColorResources.COLOR_WHITE : Theme.of(context).textTheme.bodyText1.color),
           ),
         ),
       ),

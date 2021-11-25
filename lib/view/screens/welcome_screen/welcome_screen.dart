@@ -30,10 +30,10 @@ class WelcomeScreen extends StatelessWidget {
                     padding: EdgeInsets.all(30),
                     child: ResponsiveHelper.isWeb() ? Consumer<SplashProvider>(
                       builder:(context, splash, child) => FadeInImage.assetNetwork(
-                        placeholder: Images.placeholder_rectangle,
+                        placeholder: Images.placeholder_image,
                         image: splash.baseUrls != null ? '${splash.baseUrls.restaurantImageUrl}/${splash.configModel.restaurantLogo}' : '',
                         height: 200,
-                        imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_rectangle, height: 200),
+                        imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_image, height: 200),
                       ),
                     ) : Image.asset(Images.logo, height: 200),
                   ),

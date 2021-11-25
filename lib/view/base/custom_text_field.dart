@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/provider/language_provider.dart';
+import 'package:flutter_restaurant/provider/theme_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hintText;
@@ -31,7 +33,7 @@ class CustomTextField extends StatefulWidget {
   final LanguageProvider languageProvider;
 
   CustomTextField(
-      {this.hintText = 'Write something...',
+      {this.hintText = '',
       this.controller,
       this.focusNode,
       this.nextFocus,
@@ -80,6 +82,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       obscureText: widget.isPassword ? _obscureText : false,
       inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))] : null,
       decoration: InputDecoration(
+        hoverColor: Colors.grey[300],
         contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 22),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -87,7 +90,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         isDense: true,
         hintText: widget.hintText,
-        fillColor: widget.fillColor != null ? widget.fillColor : Theme.of(context).accentColor,
+        fillColor: widget.fillColor != null ? widget.fillColor :  Provider.of<ThemeProvider>(context).darkTheme ? Colors.grey[500] : Colors.grey[300],
         hintStyle: Theme.of(context).textTheme.headline2.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.COLOR_GREY_CHATEAU),
         filled: true,
         prefixIcon: widget.isShowPrefixIcon ? Padding(

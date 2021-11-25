@@ -22,7 +22,7 @@
   "restaurants": "Restaurants",
   "view_all": "View All",
   "popular_item": "Popular Item",
-  "banner": "Banner",
+  "super_deals": "Super Deals",
   "combo_offer": "Combo Offer",
   "delivery_man": "Delivery Man",
   "order_accepted": "Order accepted",
@@ -263,6 +263,13 @@
   "select_a_time": "Select a time",
   "one_or_more_products_are_not_available_for_this_selected_time": "One or more products are not available for this selected time",
   "points": "Points",
+  "refer code": "Refer Code",
+  "optional": "Optional",
+  "invite friends": "Invite Friends",
+  "no_restaurant_found": "No Restaurant Found",
   "are_you_sure": "Are you sure want to reset?",
-  "if_you_want": "You have already cart in food another restaurant. If you continue, your all previous food will be remove from cart"
+  "if_you_want": "You have already cart in food another restaurant. If you continue, your all previous food will be remove from cart",
+  "dismiss": "Dismiss",
+  "alert": "Alert",
+  "alert_description": "We deliver to Gulshan plus 3 km which includes Gulshan, Banani, Baridhara, Basundhara, Niketon and Badda. \nPlease proceed if you want to continue."
 }

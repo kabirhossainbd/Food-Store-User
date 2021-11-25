@@ -17,10 +17,14 @@ class ProfileProvider with ChangeNotifier {
   ProfileProvider({@required this.profileRepo});
 
   UserInfoModel _userInfoModel;
+  PickedFile _pickedFile;
+
 
   UserInfoModel get userInfoModel => _userInfoModel;
+  PickedFile get pickedFile => _pickedFile;
 
   Future<ResponseModel> getUserInfo(BuildContext context) async {
+    _pickedFile = null;
     ResponseModel _responseModel;
     ApiResponse apiResponse = await profileRepo.getUserInfo();
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
@@ -44,17 +48,18 @@ class ProfileProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<ResponseModel> updateUserInfo(UserInfoModel updateUserModel, String password, File file, PickedFile data, String token) async {
+  Future<ResponseModel> updateUserInfo(UserInfoModel updateUserModel, String password, String token) async {
     _isLoading = true;
     notifyListeners();
     ResponseModel _responseModel;
-    http.StreamedResponse response = await profileRepo.updateProfile(updateUserModel, password, file, data, token);
+    http.StreamedResponse response = await profileRepo.updateProfile(updateUserModel, password, _pickedFile, token);
     _isLoading = false;
     if (response.statusCode == 200) {
       Map map = jsonDecode(await response.stream.bytesToString());
       String message = map["message"];
       _userInfoModel = updateUserModel;
       _responseModel = ResponseModel(true, message);
+      _pickedFile = null;
       print(message);
     } else {
       _responseModel = ResponseModel(false, '${response.statusCode} ${response.reasonPhrase}');
@@ -62,6 +67,11 @@ class ProfileProvider with ChangeNotifier {
     }
     notifyListeners();
     return _responseModel;
+  }
+
+  void pickImage() async {
+    _pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    notifyListeners();
   }
 
 }

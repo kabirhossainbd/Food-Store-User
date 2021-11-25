@@ -1,7 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/address_model.dart';
-import 'package:flutter_restaurant/data/model/response/category_model.dart';
 import 'package:flutter_restaurant/data/model/response/order_model.dart';
 import 'package:flutter_restaurant/data/model/response/restaurant_model.dart';
 import 'package:flutter_restaurant/helper/html_type.dart';
@@ -25,7 +24,7 @@ import 'package:flutter_restaurant/view/screens/forgot_password/create_new_passw
 import 'package:flutter_restaurant/view/screens/forgot_password/forgot_password_screen.dart';
 import 'package:flutter_restaurant/view/screens/forgot_password/verification_screen.dart';
 import 'package:flutter_restaurant/view/screens/html/html_viewer_screen.dart';
-import 'package:flutter_restaurant/view/screens/language/choose_language_screen.dart';
+import 'package:flutter_restaurant/view/screens/menu/invite_friends_screen.dart';
 import 'package:flutter_restaurant/view/screens/notification/notification_screen.dart';
 import 'package:flutter_restaurant/view/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter_restaurant/view/screens/order/order_details_screen.dart';
@@ -46,9 +45,9 @@ class RouterHelper {
 //*******Handlers*********
   static Handler _splashHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => SplashScreen());
 
-  static Handler _languageHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) {
-    return ChooseLanguageScreen(fromMenu: params['page'][0] == 'menu');
-  });
+  // static Handler _languageHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) {
+  //   return ChooseLanguageScreen(fromMenu: params['page'][0] == 'menu');
+  // });
 
   static Handler _onbordingHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => OnBoardingScreen());
 
@@ -67,7 +66,7 @@ class RouterHelper {
 
 
   static Handler _forgotPassHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => ForgotPasswordScreen());
-  static Handler _cartHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => CartScreen());
+  static Handler _cartHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => CartScreen(isHome: false,));
 
   static Handler _createNewPassHandler = Handler(
       handlerFunc: (context, Map<String, dynamic> params) {
@@ -83,8 +82,8 @@ class RouterHelper {
   });
 
   static Handler _dashScreenBoardHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) {
-    return DashboardScreen(pageIndex: params['page'][0] == 'home' ? 0 : params['page'][0] == 'cart' ? 1 : params['page'][0] == 'order' ? 2
-        : params['page'][0] == 'favourite' ? 3 : params['page'][0] == 'menu' ? 4 : 0);
+    return DashboardScreen(pageIndex: params['page'][0] == 'home' ? 0 : params['page'][0] == 'favourite' ? 1 : params['page'][0] == 'cart' ? 2
+        : params['page'][0] == 'order' ? 3 : params['page'][0] == 'menu' ? 4 : 0);
   });
 
   static Handler _deshboardHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => DashboardScreen(pageIndex: 0));
@@ -95,7 +94,7 @@ class RouterHelper {
     return SearchResultScreen(searchString: params['text'][0].replaceAll('-', ' '));
   });
 
-  static Handler _setMenuHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => SetMenuScreen());
+  static Handler _setMenuHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => ComboOfferScreen());
 
   // static Handler _categoryHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) {
   //   CategoryScreen _categoryScreen = ModalRoute.of(context).settings.arguments;
@@ -162,6 +161,7 @@ class RouterHelper {
   );
 
   static Handler _profileHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => ProfileScreen());
+  static Handler _inviteFriendsHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => InviteFriends());
 
   static Handler _addressHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => AddressScreen());
 
@@ -206,7 +206,7 @@ class RouterHelper {
   static void setupRouter() {
     router.notFoundHandler = _notFoundHandler;
     router.define(Routes.SPLASH_SCREEN, handler: _splashHandler, transitionType: TransitionType.fadeIn);
-    router.define(Routes.LANGUAGE_SCREEN, handler: _languageHandler, transitionType: TransitionType.fadeIn);
+    //router.define(Routes.LANGUAGE_SCREEN, handler: _languageHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ONBOARDING_SCREEN, handler: _onbordingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.WELCOME_SCREEN, handler: _welcomeHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.LOGIN_SCREEN, handler: _loginHandler, transitionType: TransitionType.fadeIn);
@@ -232,6 +232,7 @@ class RouterHelper {
     router.define(Routes.RATE_SCREEN, handler: _rateReviewHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ORDERTRAKING_SCREEN, handler: _orderTrackingHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.PROFILE_SCREEN, handler: _profileHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.INVITE_FRIENDS, handler: _inviteFriendsHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ADDRESS_SCREEN, handler: _addressHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.MAP_SCREEN, handler: _mapHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.ADD_ADDRESS_SCREEN, handler: _newAddressHandler, transitionType: TransitionType.fadeIn);

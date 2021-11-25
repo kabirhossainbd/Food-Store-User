@@ -20,7 +20,7 @@ class OrderShimmer extends StatelessWidget {
             padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
             margin: EdgeInsets.only(bottom: Dimensions.PADDING_SIZE_SMALL),
             decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
+              color: ColorResources.getBackgroundColor(context),
               boxShadow: [BoxShadow(
                 color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],
                 spreadRadius: 1, blurRadius: 5,

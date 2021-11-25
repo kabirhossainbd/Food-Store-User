@@ -3,6 +3,7 @@ import 'package:flutter_restaurant/helper/html_type.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
@@ -50,7 +51,7 @@ class HtmlViewerScreen extends StatelessWidget {
         child: Container(
           width: 1170,
           height: MediaQuery.of(context).size.height,
-          color: ResponsiveHelper.isWeb() ? Colors.white : Theme.of(context).accentColor,
+          color: ResponsiveHelper.isWeb() ? Colors.white : ColorResources.getBackgroundColor(context),
           child: ResponsiveHelper.isWeb() ? Column(
             children: [
               ResponsiveHelper.isDesktop(context) ? Container(

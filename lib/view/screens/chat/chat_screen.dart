@@ -101,7 +101,7 @@ class ChatScreen extends StatelessWidget {
                   ConstrainedBox(
                     constraints: BoxConstraints(maxHeight: 100),
                     child: Ink(
-                      color: Theme.of(context).accentColor,
+                      color: ColorResources.getBackgroundColor(context),
                       child: Row(children: [
 
                         InkWell(
@@ -150,7 +150,7 @@ class ChatScreen extends StatelessWidget {
                             if(Provider.of<ChatProvider>(context, listen: false).isSendButtonActive){
                               Provider.of<ChatProvider>(context, listen: false).sendMessage(
                                 _controller.text, Provider.of<AuthProvider>(context, listen: false).getUserToken(),
-                                Provider.of<ProfileProvider>(context, listen: false).userInfoModel.id.toString(), context,
+                                Provider.of<ProfileProvider>(context, listen: false).userInfoModel.data.id.toString(), context,
                               );
                               _controller.text = '';
                             }else {

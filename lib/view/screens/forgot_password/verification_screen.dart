@@ -19,6 +19,7 @@ class VerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorResources.getBackgroundColor(context),
       appBar: CustomAppBar(context: context, title: getTranslated('verify_email', context)),
       body: SafeArea(
         child: Scrollbar(

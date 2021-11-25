@@ -71,7 +71,7 @@ class AddressWidget extends StatelessWidget {
                     margin: EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: Theme.of(context).accentColor,
+                      color: ColorResources.getBackgroundColor(context),
                       border: Border.all(width: 1, color: ColorResources.getGreyColor(context)),
                     ),
                     child: Icon(Icons.map),

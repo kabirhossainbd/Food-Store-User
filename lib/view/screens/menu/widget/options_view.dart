@@ -45,7 +45,7 @@ class OptionsView extends StatelessWidget {
                 ) : SizedBox(),
 
                 ListTile(
-                  onTap: () => ResponsiveHelper.isMobilePhone() ? onTap(2) : Navigator.pushNamed(context, Routes.getDashboardRoute('order')),
+                  onTap: () => ResponsiveHelper.isMobilePhone() ? onTap(3) : Navigator.pushNamed(context, Routes.getDashboardRoute('order')),
                   leading: Image.asset(Images.order, width: 20, height: 20, color: Theme.of(context).textTheme.bodyText1.color),
                   title: Text(getTranslated('my_order', context), style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                 ),
@@ -53,6 +53,12 @@ class OptionsView extends StatelessWidget {
                   onTap: () =>  Navigator.pushNamed(context, Routes.getProfileRoute()),
                   leading: Image.asset(Images.profile, width: 20, height: 20, color: Theme.of(context).textTheme.bodyText1.color),
                   title: Text(getTranslated('profile', context), style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                ),
+
+                ListTile(
+                  onTap: () =>  Navigator.pushNamed(context, Routes.getInviteFriendsRoute()),
+                  leading: Icon(Icons.group, size: 25, color: Theme.of(context).textTheme.bodyText1.color,),
+                  title: Text(getTranslated('invite friends', context), style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                 ),
                 ListTile(
                   onTap: () => Navigator.pushNamed(context, Routes.getAddressRoute()),
@@ -74,11 +80,11 @@ class OptionsView extends StatelessWidget {
                   leading: Image.asset(Images.notification, width: 20, height: 20, color: Theme.of(context).textTheme.bodyText1.color),
                   title: Text(getTranslated('notifications', context), style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                 ) : SizedBox(),
-                ListTile(
-                  onTap: () => Navigator.pushNamed(context, Routes.getLanguageRoute('menu')),
-                  leading: Image.asset(Images.language, width: 20, height: 20, color: Theme.of(context).textTheme.bodyText1.color),
-                  title: Text(getTranslated('language', context), style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
-                ),
+                // ListTile(
+                //   onTap: () => Navigator.pushNamed(context, Routes.getLanguageRoute('menu')),
+                //   leading: Image.asset(Images.language, width: 20, height: 20, color: Theme.of(context).textTheme.bodyText1.color),
+                //   title: Text(getTranslated('language', context), style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                // ),
                 ListTile(
                   onTap: () => Navigator.pushNamed(context, Routes.getSupportRoute()),
                   leading: Icon(Icons.contact_support, size: 20, color: Theme.of(context).textTheme.bodyText1.color),

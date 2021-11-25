@@ -39,7 +39,7 @@ class ProductView extends StatelessWidget {
     });
     return Consumer<ProductProvider>(
       builder: (context, prodProvider, child) {
-        List<Product> productList;
+        List<Products> productList;
         if (productType == ProductType.POPULAR_PRODUCT) {
           productList = prodProvider.popularProductList;
         }
@@ -47,10 +47,10 @@ class ProductView extends StatelessWidget {
         return Column(children: [
           productList != null ? productList.length > 0 ? GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-              childAspectRatio: 4,
-              crossAxisCount: ResponsiveHelper.isDesktop(context) ? 3 : ResponsiveHelper.isTab(context) ? 2 : 1),
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+                childAspectRatio: 4,
+                crossAxisCount: ResponsiveHelper.isDesktop(context) ? 3 : ResponsiveHelper.isTab(context) ? 2 : 1),
             itemCount: productList.length,
             padding: EdgeInsets.symmetric(
                 horizontal: Dimensions.PADDING_SIZE_SMALL),
@@ -60,17 +60,17 @@ class ProductView extends StatelessWidget {
               return ProductWidget(product: productList[index]);
             },
           ) : NoDataScreen() : GridView.builder(
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-              childAspectRatio: 4,
-              crossAxisCount: ResponsiveHelper.isDesktop(context) ? 3 : ResponsiveHelper.isTab(context) ? 2 : 1),
-            itemCount: 10,
-            itemBuilder: (BuildContext context, int index) {
-              return ProductShimmer(isEnabled: productList == null);
-            },
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL)),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 4,
+                  crossAxisCount: ResponsiveHelper.isDesktop(context) ? 3 : ResponsiveHelper.isTab(context) ? 2 : 1),
+              itemCount: ResponsiveHelper.isDesktop(context) ? 20 : 10,
+              itemBuilder: (BuildContext context, int index) {
+                return ProductShimmer(isEnabled: productList == null);
+              },
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL)),
 
           prodProvider.isLoading ? Center(child: Padding(
             padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),

@@ -16,7 +16,7 @@ class Routes {
   static const String RESTAURANT_SCREEN = '/restaurant';
   static const String RESTAURANT_DETAILS_SCREEN = '/restaurant-details';
   static const String SEARCH_RESULT_SCREEN = '/search-result';
-  static const String combo_offer_SCREEN = '/set-menu';
+  static const String combo_offer_SCREEN = '/combo-offer';
   static const String CATEGORY_SCREEN = '/category';
   static const String CART_SCREEN = '/cart-screen';
   static const String NOTIFICATION_SCREEN = '/notification';
@@ -27,6 +27,7 @@ class Routes {
   static const String RATE_SCREEN = '/rate-review';
   static const String ORDERTRAKING_SCREEN = '/order-tracking';
   static const String PROFILE_SCREEN = '/profile';
+  static const String INVITE_FRIENDS = '/invite-friends';
   static const String ADDRESS_SCREEN = '/address';
   static const String MAP_SCREEN = '/map';
   static const String ADD_ADDRESS_SCREEN = '/add-address';
@@ -64,6 +65,7 @@ class Routes {
   static String getRateReviewRoute() => RATE_SCREEN;
   static String getOrderTrackingRoute(int id) => '$ORDERTRAKING_SCREEN?id=$id';
   static String getProfileRoute() => PROFILE_SCREEN;
+  static String getInviteFriendsRoute() => INVITE_FRIENDS;
   static String getAddressRoute() => ADDRESS_SCREEN;
   static String getMapRoute(String address, String type, String lat, String long, String name, String num, int id, int user) {
     return '$MAP_SCREEN?address=$address&type=$type&lat=$lat&long=$long&name=$name&num=$num&id=$id&user=$user';

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
@@ -17,12 +18,11 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/not_logged_in_screen.dart';
 import 'package:flutter_restaurant/view/base/rating_bar.dart';
-import 'package:flutter_restaurant/view/base/zoom_image.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class ProductWidget extends StatelessWidget {
-  final Product product;
+  final Products product;
   ProductWidget({@required this.product});
 
   @override
@@ -40,11 +40,10 @@ class ProductWidget extends StatelessWidget {
         _endingPrice = _priceList[_priceList.length-1];
       }
     }else {
-      _startingPrice = product.price;
+      _startingPrice = product.price.toDouble();
     }
 
-    double _discountedPrice = PriceConverter.convertWithDiscount(context, product.price, product.discount, product.discountType);
-
+    double _discountedPrice = PriceConverter.convertWithDiscount(context, product.price.toDouble(), product.discount.toDouble(), product.discountType);
     bool _isAvailable = DateConverter.isAvailable(product.availableTimeStarts, product.availableTimeEnds, context);
 
     return Padding(
@@ -72,9 +71,9 @@ class ProductWidget extends StatelessWidget {
         },
         child: Container(
           height: 85,
-          padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL, horizontal: Dimensions.PADDING_SIZE_SMALL),
+          padding: EdgeInsets.symmetric(vertical: 2, horizontal: Dimensions.PADDING_SIZE_SMALL),
           decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            color: ColorResources.getBackgroundColor(context),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [BoxShadow(
               color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],
@@ -85,10 +84,12 @@ class ProductWidget extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: ZoomPage(
-                    placeholder: Images.placeholder_image, height: 70, width: 85,
+                  borderRadius: BorderRadius.circular(20),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: Images.placeholder_image, height: 85, width: 85,
                     image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${product.image}',
+                    imageErrorBuilder: (c, o, s) => Image.asset( Images.placeholder_image),
+
                  ),
                 ),
                 _isAvailable ? SizedBox() : Positioned(
@@ -106,13 +107,13 @@ class ProductWidget extends StatelessWidget {
             SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                SelectableText(product.name, style: rubikMedium, maxLines: 1),
+                SelectableText(product.name, style: rubikMedium, maxLines: 1,  scrollPhysics: NeverScrollableScrollPhysics()),
                 SizedBox(height: 4),
                 RatingBar(rating: product.rating.length > 0 ? double.parse(product.rating[0].average) : 0.0, size: 10),
                 SizedBox(height: 4),
                 Text(
-                  '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount, discountType: product.discountType)}'
-                      '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount,
+                  '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount.toDouble(), discountType: product.discountType)}'
+                      '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount.toDouble(),
                       discountType: product.discountType)}' : ''}',
                   style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL),
                 ),
@@ -127,7 +128,7 @@ class ProductWidget extends StatelessWidget {
             Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                 Consumer<WishListProvider>(builder:
                   (context, wishList, child) {
-                return InkWell(
+                  return InkWell(
                   onTap: () {
                     if(!_isLoggedIn){
                       showDialog(context: context, builder: (context) => NotLoggedInScreen(isFav: true,));

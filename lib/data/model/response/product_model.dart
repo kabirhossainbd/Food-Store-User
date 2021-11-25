@@ -2,10 +2,10 @@ class ProductModel {
   int _totalSize;
   String _limit;
   String _offset;
-  List<Product> _products;
+  List<Products> _products;
 
   ProductModel(
-      {int totalSize, String limit, String offset, List<Product> products}) {
+      {int totalSize, String limit, String offset, List<Products> products}) {
     this._totalSize = totalSize;
     this._limit = limit;
     this._offset = offset;
@@ -15,7 +15,7 @@ class ProductModel {
   int get totalSize => _totalSize;
   String get limit => _limit;
   String get offset => _offset;
-  List<Product> get products => _products;
+  List<Products> get products => _products;
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     _totalSize = json['total_size'];
@@ -24,7 +24,7 @@ class ProductModel {
     if (json['products'] != null) {
       _products = [];
       json['products'].forEach((v) {
-        _products.add(new Product.fromJson(v));
+        _products.add(new Products.fromJson(v));
       });
     }
   }
@@ -41,52 +41,56 @@ class ProductModel {
   }
 }
 
-class Product {
+class Products {
   int _id;
   String _name;
   String _description;
   String _image;
   double _price;
-  List<Variation> _variations;
+  List<Variations> _variations;
   List<AddOns> _addOns;
-  double _tax;
+  int _tax;
   String _availableTimeStarts;
   String _availableTimeEnds;
   int _status;
   String _createdAt;
   String _updatedAt;
   List<String> _attributes;
-  List<CategoryId> _categoryIds;
-  List<ChoiceOption> _choiceOptions;
-  double _discount;
+  List<CategoryIds> _categoryIds;
+  List<ChoiceOptions> _choiceOptions;
+  int _discount;
   String _discountType;
   String _taxType;
   int _setMenu;
+  int _branchId;
+  Null _colors;
   int _companyId;
   int _restaurantId;
   List<Rating> _rating;
 
-  Product(
+  Products(
       {int id,
         String name,
         String description,
         String image,
         double price,
-        List<Variation> variations,
+        List<Variations> variations,
         List<AddOns> addOns,
-        double tax,
+        int tax,
         String availableTimeStarts,
         String availableTimeEnds,
         int status,
         String createdAt,
         String updatedAt,
         List<String> attributes,
-        List<CategoryId> categoryIds,
-        List<ChoiceOption> choiceOptions,
-        double discount,
+        List<CategoryIds> categoryIds,
+        List<ChoiceOptions> choiceOptions,
+        int discount,
         String discountType,
         String taxType,
         int setMenu,
+        int branchId,
+        Null colors,
         int companyId,
         int restaurantId,
         List<Rating> rating}) {
@@ -110,6 +114,8 @@ class Product {
     this._discountType = discountType;
     this._taxType = taxType;
     this._setMenu = setMenu;
+    this._branchId = branchId;
+    this._colors = colors;
     this._companyId = companyId;
     this._restaurantId = restaurantId;
     this._rating = rating;
@@ -120,26 +126,29 @@ class Product {
   String get description => _description;
   String get image => _image;
   double get price => _price;
-  List<Variation> get variations => _variations;
+
+  List<Variations> get variations => _variations;
   List<AddOns> get addOns => _addOns;
-  double get tax => _tax;
+  int get tax => _tax;
   String get availableTimeStarts => _availableTimeStarts;
   String get availableTimeEnds => _availableTimeEnds;
   int get status => _status;
   String get createdAt => _createdAt;
   String get updatedAt => _updatedAt;
   List<String> get attributes => _attributes;
-  List<CategoryId> get categoryIds => _categoryIds;
-  List<ChoiceOption> get choiceOptions => _choiceOptions;
-  double get discount => _discount;
+  List<CategoryIds> get categoryIds => _categoryIds;
+  List<ChoiceOptions> get choiceOptions => _choiceOptions;
+  int get discount => _discount;
   String get discountType => _discountType;
   String get taxType => _taxType;
   int get setMenu => _setMenu;
+  int get branchId => _branchId;
+  Null get colors => _colors;
   int get companyId => _companyId;
   int get restaurantId => _restaurantId;
   List<Rating> get rating => _rating;
 
-  Product.fromJson(Map<String, dynamic> json) {
+  Products.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _name = json['name'];
     _description = json['description'];
@@ -148,7 +157,7 @@ class Product {
     if (json['variations'] != null) {
       _variations = [];
       json['variations'].forEach((v) {
-        _variations.add(new Variation.fromJson(v));
+        _variations.add(new Variations.fromJson(v));
       });
     }
     if (json['add_ons'] != null) {
@@ -157,7 +166,7 @@ class Product {
         _addOns.add(new AddOns.fromJson(v));
       });
     }
-    _tax = json['tax'].toDouble();
+    _tax = json['tax'];
     _availableTimeStarts = json['available_time_starts'];
     _availableTimeEnds = json['available_time_ends'];
     _status = json['status'];
@@ -167,19 +176,21 @@ class Product {
     if (json['category_ids'] != null) {
       _categoryIds = [];
       json['category_ids'].forEach((v) {
-        _categoryIds.add(new CategoryId.fromJson(v));
+        _categoryIds.add(new CategoryIds.fromJson(v));
       });
     }
     if (json['choice_options'] != null) {
       _choiceOptions = [];
       json['choice_options'].forEach((v) {
-        _choiceOptions.add(new ChoiceOption.fromJson(v));
+        _choiceOptions.add(new ChoiceOptions.fromJson(v));
       });
     }
-    _discount = json['discount'].toDouble();
+    _discount = json['discount'];
     _discountType = json['discount_type'];
     _taxType = json['tax_type'];
-    _setMenu = json['combo_offer'];
+    _setMenu = json['set_menu'];
+    _branchId = json['branch_id'];
+    _colors = json['colors'];
     _companyId = json['company_id'];
     _restaurantId = json['restaurant_id'];
     if (json['rating'] != null) {
@@ -220,7 +231,9 @@ class Product {
     data['discount'] = this._discount;
     data['discount_type'] = this._discountType;
     data['tax_type'] = this._taxType;
-    data['combo_offer'] = this._setMenu;
+    data['set_menu'] = this._setMenu;
+    data['branch_id'] = this._branchId;
+    data['colors'] = this._colors;
     data['company_id'] = this._companyId;
     data['restaurant_id'] = this._restaurantId;
     if (this._rating != null) {
@@ -230,11 +243,11 @@ class Product {
   }
 }
 
-class Variation {
+class Variations {
   String _type;
   double _price;
 
-  Variation({String type, double price}) {
+  Variations({String type, double price}) {
     this._type = type;
     this._price = price;
   }
@@ -242,11 +255,9 @@ class Variation {
   String get type => _type;
   double get price => _price;
 
-  Variation.fromJson(Map<String, dynamic> json) {
+  Variations.fromJson(Map<String, dynamic> json) {
     _type = json['type'];
-    if(json['price'] != null) {
-      _price = json['price'].toDouble();
-    }
+    _price = json['price'];
   }
 
   Map<String, dynamic> toJson() {
@@ -281,7 +292,7 @@ class AddOns {
   AddOns.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _name = json['name'];
-    _price = json['price'].toDouble();
+    _price = json['price'];
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }
@@ -297,11 +308,11 @@ class AddOns {
   }
 }
 
-class CategoryId {
+class CategoryIds {
   String _id;
   int _position;
 
-  CategoryId({String id, int position}) {
+  CategoryIds({String id, int position}) {
     this._id = id;
     this._position = position;
   }
@@ -309,7 +320,7 @@ class CategoryId {
   String get id => _id;
   int get position => _position;
 
-  CategoryId.fromJson(Map<String, dynamic> json) {
+  CategoryIds.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
     _position = json['position'];
   }
@@ -322,12 +333,12 @@ class CategoryId {
   }
 }
 
-class ChoiceOption {
+class ChoiceOptions {
   String _name;
   String _title;
   List<String> _options;
 
-  ChoiceOption({String name, String title, List<String> options}) {
+  ChoiceOptions({String name, String title, List<String> options}) {
     this._name = name;
     this._title = title;
     this._options = options;
@@ -337,7 +348,7 @@ class ChoiceOption {
   String get title => _title;
   List<String> get options => _options;
 
-  ChoiceOption.fromJson(Map<String, dynamic> json) {
+  ChoiceOptions.fromJson(Map<String, dynamic> json) {
     _name = json['name'];
     _title = json['title'];
     _options = json['options'].cast<String>();

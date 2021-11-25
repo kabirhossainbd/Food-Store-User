@@ -27,6 +27,7 @@ class NotificationScreen extends StatelessWidget {
               await Provider.of<NotificationProvider>(context, listen: false).initNotificationList(context);
             },
             backgroundColor: Theme.of(context).primaryColor,
+            color: ColorResources.COLOR_WHITE,
             child: Scrollbar(
               child: SingleChildScrollView(
                 child: Center(
@@ -61,7 +62,7 @@ class NotificationScreen extends StatelessWidget {
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).accentColor,
+                                    color: ColorResources.getBackgroundColor(context),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Column(

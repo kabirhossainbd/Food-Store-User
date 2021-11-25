@@ -42,7 +42,10 @@ class SearchProvider with ChangeNotifier {
       int categoryID = categoryList[categoryIndex].id;
       _searchProductList.removeWhere((product) {
         List<String> _ids = [];
-        product.categoryIds.forEach((element) => _ids.add(element.id));
+        product.categoryIds.forEach((element) {
+          return _ids.add(element.id);
+        });
+
         return !_ids.contains(categoryID.toString());
       });
     }
@@ -52,14 +55,14 @@ class SearchProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> _searchProductList;
-  List<Product> _filterProductList;
+  List<Products> _searchProductList;
+  List<Products> _filterProductList;
   bool _isClear = true;
   String _searchText = '';
 
-  List<Product> get searchProductList => _searchProductList;
+  List<Products> get searchProductList => _searchProductList;
 
-  List<Product> get filterProductList => _filterProductList;
+  List<Products> get filterProductList => _filterProductList;
 
   bool get isClear => _isClear;
 

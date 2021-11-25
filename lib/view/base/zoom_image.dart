@@ -4,9 +4,10 @@ import 'package:vector_math/vector_math_64.dart' show Vector3;
 class ZoomPage extends StatefulWidget {
   final String placeholder;
   final String image;
+  final String errorBuilder;
   final double height;
   final double width;
-  ZoomPage({@required this.placeholder,@required this.image, this.height, this.width });
+  ZoomPage({@required this.placeholder,@required this.image, this.errorBuilder, this.height, this.width });
   @override
   _ZoomPageState createState() => _ZoomPageState();
 }
@@ -18,7 +19,7 @@ class _ZoomPageState extends State<ZoomPage> with SingleTickerProviderStateMixin
   void initState() {
     // TODO: implement initState
    _animationController = new AnimationController(vsync: this, duration: Duration(microseconds: 500));
-   _animation = Tween(begin: 2.0, end: 3.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut))..addListener(() {
+   _animation = Tween(begin: 1.0, end: 1.3).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut))..addListener(() {
      setState(() {
 
      });
@@ -44,7 +45,9 @@ class _ZoomPageState extends State<ZoomPage> with SingleTickerProviderStateMixin
             image: widget.image,
             width: widget.width,
             height: widget.height,
-              fit: BoxFit.fill)
+              fit: BoxFit.cover,
+            imageErrorBuilder: (c, o, s) => Image.asset(widget.errorBuilder, height: widget.height, width: widget.width, fit: BoxFit.cover),
+          )
       ),
     );
   }

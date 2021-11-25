@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         bool isNotConnected = result != ConnectivityResult.wifi && result != ConnectivityResult.mobile;
         isNotConnected ? SizedBox() : _globalKey.currentState.hideCurrentSnackBar();
         _globalKey.currentState.showSnackBar(SnackBar(
-          backgroundColor: isNotConnected ? Colors.red : Colors.green,
+          backgroundColor: isNotConnected ? Theme.of(context).primaryColor : Colors.green,
           duration: Duration(seconds: isNotConnected ? 6000 : 3),
           content: Text(
             isNotConnected ? getTranslated('no_connection', _globalKey.currentContext) : getTranslated('connected', _globalKey.currentContext),
@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _route() {
-    Provider.of<SplashProvider>(context, listen: false).initConfig(_globalKey).then((bool isSuccess) {
+    Provider.of<SplashProvider>(context, listen: false).initConfig(_globalKey, context).then((bool isSuccess) {
       if (isSuccess) {
         Timer(Duration(seconds: 1), () async {
           if (Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
@@ -67,8 +67,7 @@ class _SplashScreenState extends State<SplashScreen> {
               await Provider.of<WishListProvider>(context, listen: false).initWishList(context);
               Navigator.pushNamedAndRemoveUntil(context, Routes.getMainRoute(), (route) => false);
             } else {
-              Navigator.pushNamedAndRemoveUntil(context, ResponsiveHelper.isMobile(context) ? AppConstants.languages.length > 1
-                  ? Routes.getLanguageRoute('splash') : Routes.getOnBoardingRoute() : Routes.getMainRoute(), (route) => false);
+              Navigator.pushNamedAndRemoveUntil(context, ResponsiveHelper.isMobile(context) ? Routes.getOnBoardingRoute() : Routes.getMainRoute(), (route) => false);
             }
           }
 
@@ -88,10 +87,21 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ResponsiveHelper.isWeb() ? FadeInImage.assetNetwork(
-                placeholder: Images.placeholder_rectangle, height: 165,
+                placeholder: Images.logo,
+                width: 250,
                 image: splash.baseUrls != null ? '${splash.baseUrls.restaurantImageUrl}/${splash.configModel.restaurantLogo}' : '',
-                imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_rectangle, height: 165),
-              ) : Image.asset(Images.logo, height: 150),
+                imageErrorBuilder: (c, o, s) => Image.asset(Images.logo),
+              ) : ResponsiveHelper.isMobile(context) ?  FadeInImage.assetNetwork(
+                placeholder: Images.logo,
+                height: 80, width: 80,
+                image: splash.baseUrls != null ? '${splash.baseUrls.restaurantImageUrl}/${splash.configModel.restaurantLogo}' : '',
+                imageErrorBuilder: (c, o, s) => Image.asset(Images.logo, height: 250, width: 150,),
+              ) : ResponsiveHelper.isMobilePhone() ?  FadeInImage.assetNetwork(
+                placeholder: Images.logo,
+                height: 80, width: 80,
+                image: splash.baseUrls != null ? '${splash.baseUrls.restaurantImageUrl}/${splash.configModel.restaurantLogo}' : '',
+                imageErrorBuilder: (c, o, s) => Image.asset(Images.logo, height: 250, width: 150,),
+              ) : Image.asset(Images.logo, height: 250, width: 150,),
               SizedBox(height: 30),
               Text(
                 ResponsiveHelper.isWeb() ? splash.configModel.restaurantName : AppConstants.APP_NAME,

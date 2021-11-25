@@ -8,15 +8,15 @@ class ComboOfferProvider extends ChangeNotifier {
   final ComboRepo setMenuRepo;
   ComboOfferProvider({@required this.setMenuRepo});
 
-  List<Product> _setMenuList;
-  List<Product> get setMenuList => _setMenuList;
+  List<Products> _comboList;
+  List<Products> get comboList => _comboList;
 
   Future<void> getSetMenuList(BuildContext context, bool reload) async {
-    if(setMenuList == null || reload) {
+    if(comboList == null || reload) {
       ApiResponse apiResponse = await setMenuRepo.getSetMenuList();
       if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
-        _setMenuList = [];
-        apiResponse.response.data.forEach((setMenu) => _setMenuList.add(Product.fromJson(setMenu)));
+        _comboList = [];
+        apiResponse.response.data.forEach((setMenu) => _comboList.add(Products.fromJson(setMenu)));
       } else {
         ApiChecker.checkApi(context, apiResponse);
       }

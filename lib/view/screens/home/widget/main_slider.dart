@@ -1,13 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
-import 'package:flutter_restaurant/data/model/response/category_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/data/model/response/restaurant_model.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/banner_provider.dart';
-import 'package:flutter_restaurant/provider/category_provider.dart';
 import 'package:flutter_restaurant/provider/restaurant_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/theme_provider.dart';
@@ -15,7 +13,6 @@ import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
-import 'package:flutter_restaurant/view/screens/category/category_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/cart_bottom_sheet.dart';
 import 'package:flutter_restaurant/view/screens/restaurant/all_restaurant_screen.dart';
 import 'package:provider/provider.dart';
@@ -55,8 +52,8 @@ class _MainSliderState extends State<MainSlider> {
                   return InkWell(
                     onTap: () {
                       if(banner.bannerList[index].productId != null) {
-                        Product product;
-                        for(Product prod in banner.productList) {
+                        Products product;
+                        for(Products prod in banner.productList) {
                           if(prod.id == banner.bannerList[index].productId) {
                             product = prod;
                             break;
@@ -118,9 +115,9 @@ class _MainSliderState extends State<MainSlider> {
                       child:  ClipRRect(
                         // borderRadius: BorderRadius.circular(10),
                         child: FadeInImage.assetNetwork(
-                          placeholder: Images.placeholder_banner, width: size.width, height: size.height, fit: BoxFit.cover,
+                          placeholder: Images.placeholder_image, width: size.width, height: size.height, fit: BoxFit.cover,
                           image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.bannerImageUrl}/${ banner.bannerList[index].image}',
-                          imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_banner, width: size.width, height: size.height, fit: BoxFit.cover),
+                          imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_image, width: size.width, height: size.height, fit: BoxFit.cover),
                         ),
                       ),
                     ),

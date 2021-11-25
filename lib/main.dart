@@ -33,6 +33,7 @@ import 'package:flutter_restaurant/theme/dark_theme.dart';
 import 'package:flutter_restaurant/theme/light_theme.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
+import 'package:flutter_restaurant/view/screens/restaurant/demo/test_c.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -46,7 +47,8 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await di.init();
   int _orderID;
-
+  bool _isReview;
+  BuildContext context;
   try {
     if (!kIsWeb) {
       FacebookAuth.i.webInitialize(
@@ -59,9 +61,13 @@ Future<void> main() async {
       final NotificationAppLaunchDetails notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
       if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
         _orderID = notificationAppLaunchDetails.payload != null ? int.parse(notificationAppLaunchDetails.payload) : null;
+        _isReview = notificationAppLaunchDetails.payload != null ? notificationAppLaunchDetails.payload.toLowerCase() == 'true' : null;
+
       }
-      await MyNotification.initialize(flutterLocalNotificationsPlugin);
+      await MyNotification.initialize(flutterLocalNotificationsPlugin,context );
       FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+      print('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV$_isReview');
+      print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO$_orderID');
     }
   }catch(e) {}
 
@@ -88,6 +94,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (context) => di.sl<WishListProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<SearchProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<RestaurantProvider>()),
+      ChangeNotifierProvider(create: (context) => di.sl<RestaruntantProviderDemo>()),
     ],
     child: MyApp(orderId: _orderID, isWeb: !kIsWeb),
   ));
@@ -120,7 +127,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
   void _route() {
-    Provider.of<SplashProvider>(context, listen: false).initConfig(_globalKey).then((bool isSuccess) {
+    Provider.of<SplashProvider>(context, listen: false).initConfig(_globalKey, context).then((bool isSuccess) {
 
       if (isSuccess) {
         Timer(Duration(seconds: ResponsiveHelper.isMobilePhone() ? 1 : 0), () async {
@@ -144,6 +151,8 @@ class _MyAppState extends State<MyApp> {
 
     return Consumer<SplashProvider>(
       builder: (context, splashProvider, child){
+
+
         return (kIsWeb && splashProvider.configModel == null) ? SizedBox() : MaterialApp(
 
           initialRoute: ResponsiveHelper.isMobilePhone() ? widget.orderId == null ? Routes.getSplashRoute()

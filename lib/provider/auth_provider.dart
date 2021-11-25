@@ -273,7 +273,6 @@ class AuthProvider with ChangeNotifier {
   // for Remember Me Section
 
   bool _isActiveRememberMe = false;
-
   bool get isActiveRememberMe => _isActiveRememberMe;
 
   toggleRememberMe() {
@@ -284,6 +283,7 @@ class AuthProvider with ChangeNotifier {
   bool isLoggedIn() {
     return authRepo.isLoggedIn();
   }
+
 
   Future<bool> clearSharedData() async {
     _isLoading = true;
@@ -312,6 +312,5 @@ class AuthProvider with ChangeNotifier {
   String getUserToken() {
     return authRepo.getUserToken();
   }
-
 
 }

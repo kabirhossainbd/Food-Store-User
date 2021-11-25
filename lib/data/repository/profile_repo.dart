@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -43,31 +44,31 @@ class ProfileRepo{
     }
   }
 
-  Future<http.StreamedResponse> updateProfile(UserInfoModel userInfoModel, String password, File file, PickedFile data, String token) async {
+  Future<http.StreamedResponse> updateProfile(UserInfoModel userInfoModel, String password, PickedFile data, String token) async {
     http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse('${AppConstants.BASE_URL}${AppConstants.UPDATE_PROFILE_URI}'));
     request.headers.addAll(<String,String>{'Authorization': 'Bearer $token'});
-    if(file != null) {
-      print('----------------${file.readAsBytes().asStream()}/${file.lengthSync()}/${file.path.split('/').last}');
-      request.files.add(http.MultipartFile('image', file.readAsBytes().asStream(), file.lengthSync(), filename: file.path.split('/').last));
-    }else if(data != null) {
+    if(ResponsiveHelper.isMobilePhone() && data != null) {
+      File _file = File(data.path);
+      request.files.add(http.MultipartFile('image', _file.readAsBytes().asStream(), _file.lengthSync(), filename: _file.path.split('/').last));
+    }else if(ResponsiveHelper.isWeb() && data != null) {
       Uint8List _list = await data.readAsBytes();
-      var part = http.MultipartFile('image', data.readAsBytes().asStream(), _list.length, filename: basename(data.path), contentType: MediaType('image', 'jpg'));
+      var part = http.MultipartFile('image', data.readAsBytes().asStream(), _list.length, filename: basename(data.path),
+          contentType: MediaType('image', 'jpg'));
       request.files.add(part);
-      print('----------------${_list.length}/${basename(data.path)}');
     }
     Map<String, String> _fields = Map();
+
     if(password.isEmpty) {
       _fields.addAll(<String, String>{
-        '_method': 'put', 'f_name': userInfoModel.fName, 'l_name': userInfoModel.lName, 'phone': userInfoModel.phone
+        '_method': 'put', 'f_name': userInfoModel.data.fName, 'l_name': userInfoModel.data.lName, 'phone': userInfoModel.data.phone
       });
     }else {
       _fields.addAll(<String, String>{
-        '_method': 'put', 'f_name': userInfoModel.fName, 'l_name': userInfoModel.lName, 'phone': userInfoModel.phone, 'password': password
+        '_method': 'put', 'f_name': userInfoModel.data.fName, 'l_name': userInfoModel.data.lName, 'phone': userInfoModel.data.phone, 'password': password
       });
     }
     request.fields.addAll(_fields);
     http.StreamedResponse response = await request.send();
     return response;
   }
-
 }

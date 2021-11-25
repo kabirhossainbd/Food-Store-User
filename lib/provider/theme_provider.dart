@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,7 @@ class ThemeProvider with ChangeNotifier {
   bool _darkTheme = true;
   bool get darkTheme => _darkTheme;
 
+
   void toggleTheme() {
     _darkTheme = !_darkTheme;
     sharedPreferences.setBool(AppConstants.THEME, _darkTheme);
@@ -21,4 +23,14 @@ class ThemeProvider with ChangeNotifier {
     _darkTheme = sharedPreferences.getBool(AppConstants.THEME) ?? false;
     notifyListeners();
   }
-}
+
+
+  bool getReview(){
+    return sharedPreferences.getBool(AppConstants.REVIEW) ?? true;
+    }
+
+    void setReview(bool isSetReview)  {
+      sharedPreferences.setBool(AppConstants.REVIEW, isSetReview);
+    }
+  }
+

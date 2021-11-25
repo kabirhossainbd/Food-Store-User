@@ -33,6 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: ColorResources.getBackgroundColor(context),
       appBar: ResponsiveHelper.isDesktop(context) ? PreferredSize(child: MainAppBar(), preferredSize: Size.fromHeight(80)) : null,
       body: SafeArea(
         child: Scrollbar(
@@ -52,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           padding: const EdgeInsets.all(15.0),
                           child: ResponsiveHelper.isWeb() ? Consumer<SplashProvider>(
                             builder:(context, splash, child) => FadeInImage.assetNetwork(
-                              placeholder: Images.placeholder_rectangle, height: MediaQuery.of(context).size.height / 4.5,
+                              placeholder: Images.placeholder_image, height: MediaQuery.of(context).size.height / 4.5,
                               image: splash.baseUrls != null ? '${splash.baseUrls.restaurantImageUrl}/${splash.configModel.restaurantLogo}' : '',
                               imageErrorBuilder: (c, o, s) => Image.asset(Images.logo, height: MediaQuery.of(context).size.height / 4.5),
                             ),
@@ -72,7 +73,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                       CustomTextField(
-                        hintText: getTranslated('demo_gmail', context),
                         isShowBorder: true,
                         inputAction: TextInputAction.done,
                         inputType: TextInputType.emailAddress,

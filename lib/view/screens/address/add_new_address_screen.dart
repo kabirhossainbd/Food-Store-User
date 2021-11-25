@@ -246,7 +246,7 @@ class AddNewAddressScreen extends StatelessWidget {
                                 Navigator.pop(context);
                               }
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value.message), backgroundColor: Colors.red));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value.message), backgroundColor: Theme.of(context).primaryColor));
                             }
                           });
                         }

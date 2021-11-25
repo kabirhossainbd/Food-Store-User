@@ -20,7 +20,7 @@ class DeliveryManWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
+        color: ColorResources.getBackgroundColor(context),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [BoxShadow(
           color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],
@@ -32,9 +32,9 @@ class DeliveryManWidget extends StatelessWidget {
         ListTile(
           leading: ClipOval(
             child: FadeInImage.assetNetwork(
-              placeholder: Images.placeholder_user, height: 40, width: 40, fit: BoxFit.cover,
+              placeholder: Images.placeholder_image, height: 40, width: 40, fit: BoxFit.cover,
               image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.deliveryManImageUrl}/${deliveryMan.image}',
-              imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_user, height: 40, width: 40, fit: BoxFit.cover),
+              imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_image, height: 40, width: 40, fit: BoxFit.cover),
             ),
           ),
           title: Text(

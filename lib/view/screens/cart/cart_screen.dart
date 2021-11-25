@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/price_converter.dart';
-import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/cart_provider.dart';
 import 'package:flutter_restaurant/provider/coupon_provider.dart';
 import 'package:flutter_restaurant/provider/localization_provider.dart';
@@ -13,26 +14,34 @@ import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
+import 'package:flutter_restaurant/view/base/animated_dialog.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
+import 'package:flutter_restaurant/view/base/custom_dialog.dart';
 import 'package:flutter_restaurant/view/base/custom_divider.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
+import 'package:flutter_restaurant/view/base/not_logged_in_screen.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/cart_product_widget.dart';
 import 'package:flutter_restaurant/view/screens/cart/widget/delivery_option_button.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
-  @override
+ final bool isHome;
+ CartScreen({@required this.isHome});
+
+ final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+ final TextEditingController _couponController = TextEditingController();
+
+ @override
   Widget build(BuildContext context) {
+    final bool _isLoggedIn = Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
     Provider.of<CouponProvider>(context, listen: false).removeCouponData(false);
     Provider.of<OrderProvider>(context, listen: false).setOrderType('delivery', notify: false);
-    final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
-    final TextEditingController _couponController = TextEditingController();
 
     return Scaffold(
       key: _scaffoldKey,
-      appBar: CustomAppBar(context: context, title: getTranslated('my_cart', context), isBackButtonExist: !ResponsiveHelper.isMobile(context)),
+      appBar: CustomAppBar(context: context, title: getTranslated('my_cart', context), isBackButtonExist: isHome ? false : true),
       body: Consumer<CartProvider>(
         builder: (context, cart, child) {
           double deliveryCharge = 0;
@@ -67,7 +76,7 @@ class CartScreen extends StatelessWidget {
             _tax = _tax + (cartModel.taxAmount * cartModel.quantity);
           });
           double _subTotal = _itemPrice + _tax + _addOns;
-          double _total = _subTotal - _discount - Provider.of<CouponProvider>(context).discount + deliveryCharge;
+          double _total = _subTotal - _discount - Provider.of<CouponProvider>(context, listen: false).discount + deliveryCharge;
 
           double _orderAmount = _itemPrice + _addOns;
 
@@ -107,7 +116,7 @@ class CartScreen extends StatelessWidget {
                                         isDense: true,
                                         filled: true,
                                         enabled: coupon.discount == 0,
-                                        fillColor: Theme.of(context).accentColor,
+                                        fillColor: ColorResources.getBackgroundColor(context),
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.horizontal(
                                             left: Radius.circular(Provider.of<LocalizationProvider>(context, listen: false).isLtr ? 10 : 0),
@@ -120,24 +129,40 @@ class CartScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    if(_couponController.text.isNotEmpty && !coupon.isLoading) {
-                                      if(coupon.discount < 1) {
-                                        coupon.applyCoupon(_couponController.text, _total).then((discount) {
-                                          if (discount > 0) {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(content: Text('You got ${PriceConverter.convertPrice(context, discount)} discount'), backgroundColor: Colors.green));
-                                          } else {
-                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                              content: Text(getTranslated('invalid_code_or', context)),
-                                              backgroundColor: Colors.red,
-                                            ));
-                                          }
-                                        });
-                                      } else {
-                                        coupon.removeCouponData(true);
+
+                                    if(!_isLoggedIn){
+                                      showDialog(context: context, builder: (context) => NotLoggedInScreen(isFav: true,));
+                                    }else{
+                                      if(_couponController.text.isNotEmpty && !coupon.isLoading) {
+                                        if(coupon.discount < 1) {
+                                          coupon.applyCoupon(_couponController.text, _total).then((discount) {
+                                            if (discount > 0) {
+                                              showCupertinoDialog( context: context, builder: (context)=> AnimateDialog(
+                                                icon: Icons.check,
+                                                title: 'You got ${PriceConverter.convertPrice(context, discount)} discount',
+                                                isFailed: false,
+                                                isDescription: false,
+                                                btnText: 'Back'),
+                                                barrierDismissible: false,
+                                              );
+
+                                            } else {
+                                              showCupertinoDialog( context: context, builder: (context)=> AnimateDialog(
+                                                icon: CupertinoIcons.xmark_octagon_fill,
+                                                title: 'Failed',
+                                                description: getTranslated('invalid_code_or', context),
+                                                isFailed: false,
+                                                isDescription: true,
+                                                btnText: 'Back'),
+                                              );
+                                            }
+                                          });
+                                        } else {
+                                          coupon.removeCouponData(true);
+                                        }
+                                      } else if(_couponController.text.isEmpty) {
+                                        showCustomSnackBar(getTranslated('enter_a_Coupon_code', context), context);
                                       }
-                                    } else if(_couponController.text.isEmpty) {
-                                      showCustomSnackBar(getTranslated('enter_a_Coupon_code', context), context);
                                     }
                                   },
                                   child: Container(
@@ -245,12 +270,12 @@ class CartScreen extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(
                       'Minimum order amount is ${PriceConverter.convertPrice(context, Provider.of<SplashProvider>(context, listen: false).configModel
                           .minimumOrderValue)}, you have ${PriceConverter.convertPrice(context, _orderAmount)} in your cart, please add more item.',
-                    ), backgroundColor: Colors.red));
+                    ), backgroundColor: Theme.of(context).primaryColor));
                   } else {
-                   Navigator.pushNamed(context, Routes.getCheckoutRoute(
-                     _total, 'cart', Provider.of<OrderProvider>(context, listen: false).orderType,
-                     Provider.of<CouponProvider>(context, listen: false).code,
-                   ));
+                    Navigator.pushNamed(context, Routes.getCheckoutRoute(
+                      _total, 'cart', Provider.of<OrderProvider>(context, listen: false).orderType,
+                      Provider.of<CouponProvider>(context, listen: false).code,
+                    ));
                   }
                 }),
               ),

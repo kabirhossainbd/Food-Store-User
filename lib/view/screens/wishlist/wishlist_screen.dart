@@ -3,6 +3,7 @@ import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
 import 'package:flutter_restaurant/provider/wishlist_provider.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
 import 'package:flutter_restaurant/view/base/no_data_screen.dart';
@@ -28,6 +29,7 @@ class _WishListScreenState extends State<WishListScreen> {
               await Provider.of<WishListProvider>(context, listen: false).initWishList(context);
             },
             backgroundColor: Theme.of(context).primaryColor,
+            color: ColorResources.COLOR_WHITE,
             child: Scrollbar(
               child: SingleChildScrollView(
                 child: Center(

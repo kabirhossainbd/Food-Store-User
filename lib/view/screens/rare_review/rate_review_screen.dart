@@ -41,7 +41,7 @@ class _RateReviewScreenState extends State<RateReviewScreen> with TickerProvider
         Center(
           child: Container(
             width: 1170,
-            color: Theme.of(context).accentColor,
+            color: ColorResources.getBackgroundColor(context),
             child: TabBar(
               controller: _tabController,
               labelColor: Theme.of(context).textTheme.bodyText1.color,

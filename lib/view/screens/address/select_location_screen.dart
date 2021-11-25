@@ -76,7 +76,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE, vertical: 18.0),
                   margin: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE, vertical: 23.0),
-                  decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(Dimensions.PADDING_SIZE_SMALL)),
+                  decoration: BoxDecoration(color: ColorResources.getBackgroundColor(context), borderRadius: BorderRadius.circular(Dimensions.PADDING_SIZE_SMALL)),
                   child: Text(locationProvider.address.name != null
                       ? '${locationProvider.address.name} , ${locationProvider.address.subAdministrativeArea} , ${locationProvider.address.isoCountryCode} '
                       : ''),

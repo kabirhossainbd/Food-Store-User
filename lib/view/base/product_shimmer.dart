@@ -15,7 +15,7 @@ class ProductShimmer extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL, horizontal: Dimensions.PADDING_SIZE_SMALL),
       margin: EdgeInsets.only(bottom: Dimensions.PADDING_SIZE_DEFAULT),
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
+        color: ColorResources.getBackgroundColor(context),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [BoxShadow(color: Colors.grey[200], blurRadius: 10, spreadRadius: 1)],
       ),

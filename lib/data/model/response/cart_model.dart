@@ -3,22 +3,22 @@ import 'package:flutter_restaurant/data/model/response/product_model.dart';
 class CartModel {
   double _price;
   double _discountedPrice;
-  List<Variation> _variation;
+  List<Variations> _variation;
   double _discountAmount;
   int _quantity;
   double _taxAmount;
   List<AddOn> _addOnIds;
-  Product _product;
+  Products _product;
 
   CartModel(
         double price,
         double discountedPrice,
-        List<Variation> variation,
+        List<Variations> variation,
         double discountAmount,
         int quantity,
         double taxAmount,
         List<AddOn> addOnIds,
-        Product product) {
+        Products product) {
     this._price = price;
     this._discountedPrice = discountedPrice;
     this._variation = variation;
@@ -31,7 +31,7 @@ class CartModel {
 
   double get price => _price;
   double get discountedPrice => _discountedPrice;
-  List<Variation> get variation => _variation;
+  List<Variations> get variation => _variation;
   double get discountAmount => _discountAmount;
   // ignore: unnecessary_getters_setters
   int get quantity => _quantity;
@@ -39,7 +39,7 @@ class CartModel {
   set quantity(int qty) => _quantity = qty;
   double get taxAmount => _taxAmount;
   List<AddOn> get addOnIds => _addOnIds;
-  Product get product => _product;
+  Products get product => _product;
 
   CartModel.fromJson(Map<String, dynamic> json) {
     _price = json['price'].toDouble();
@@ -47,7 +47,7 @@ class CartModel {
     if (json['variation'] != null) {
       _variation = [];
       json['variation'].forEach((v) {
-        _variation.add(new Variation.fromJson(v));
+        _variation.add(new Variations.fromJson(v));
       });
     }
     _discountAmount = json['discount_amount'].toDouble();
@@ -60,7 +60,7 @@ class CartModel {
       });
     }
     if (json['product'] != null) {
-      _product = Product.fromJson(json['product']);
+      _product = Products.fromJson(json['product']);
     }
   }
 

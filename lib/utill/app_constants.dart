@@ -5,12 +5,12 @@ class AppConstants {
 
   static const String APP_NAME = '';
 
-  static const String BASE_URL = 'https://thefoodstore.app';
+  static const String BASE_URL = 'https://admin.thefoodstore.app';
   static const String CATEGORY_URI = '/api/v1/categories';
   static const String RESTAURANT_URI = '/api/v1/restaurant';
   static const String BANNER_URI = '/api/v1/banners';
   static const String RES_PRODUCT_URI = '/api/v1/restaurant/restaurant-details/';
-  static const String POPULAR_PRODUCT_URI = '/api/v1/products/latest';
+  static const String POPULAR_PRODUCT_URI = '/api/v1/products/best-sell';
   static const String SEARCH_PRODUCT_URI = '/api/v1/products/details/';
   static const String SUB_CATEGORY_URI = '/api/v1/categories/childes/';
   static const String CATEGORY_PRODUCT_URI = '/api/v1/categories/products/';
@@ -53,6 +53,8 @@ class AppConstants {
 
   // Shared Key
   static const String THEME = 'theme';
+  static const String REVIEW = 'review';
+  static const String IS_FIRST_RUN = 'is_first_run';
   static const String TOKEN = 'token';
   static const String COUNTRY_CODE = 'country_code';
   static const String LANGUAGE_CODE = 'language_code';

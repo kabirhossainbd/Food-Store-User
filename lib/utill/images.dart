@@ -18,9 +18,9 @@ class Images {
   static const String coupon_bg = 'assets/image/coupon_bg.png';
   static const String percentage = 'assets/image/percentage.png';
   static const String placeholder_image = 'assets/image/placeholder_image.png';
-  static const String placeholder_banner = 'assets/image/placeholder_banner.png';
-  static const String placeholder_rectangle = 'assets/image/placeholder_rectangle.png';
-  static const String placeholder_user = 'assets/image/placeholder_user.png';
+ // static const String placeholder_banner = 'assets/image/placeholder_banner.png';
+ // static const String placeholder_rectangle = 'assets/image/placeholder_rectangle.png';
+ // static const String placeholder_user = 'assets/image/placeholder_user.png';
   static const String binoculars = 'assets/image/binoculars.png';
   static const String clock = 'assets/image/clock.png';
   static const String shopping_cart = 'assets/image/shopping_cart.png';
@@ -36,6 +36,7 @@ class Images {
 
   // for Icon
   static const String logo = 'assets/image/logo.png';
+  static const String dark_logo = 'assets/image/dark_logo.png';
   static const String marker = 'assets/icon/marker.png';
   static const String my_location = 'assets/icon/my_location.png';
   static const String search = 'assets/icon/search.png';
@@ -64,6 +65,7 @@ class Images {
   static const String onboarding_two = 'assets/image/onboarding_two.png';
   static const String united_kindom = 'assets/image/united_kindom.png';
   static const String done = 'assets/icon/done.png';
+  static const String refer_image = 'assets/image/refer_image.png';
 
   // restaurant
   static const String wrapnmore = 'assets/image/wrapncombo.jpg';

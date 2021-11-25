@@ -39,7 +39,7 @@ class DeliveryManReviewWidget extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
+                      color: ColorResources.getBackgroundColor(context),
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [BoxShadow(
                         color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],

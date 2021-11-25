@@ -11,41 +11,39 @@ import 'package:path_provider/path_provider.dart';
 
 class MyNotification {
 
-  static Future<void> initialize(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+  BuildContext context;
+  MyNotification({this.context});
+  static Future<void> initialize(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin, BuildContext context) async {
     var androidInitialize = new AndroidInitializationSettings('notification_icon');
     var iOSInitialize = new IOSInitializationSettings();
     var initializationsSettings = new InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
     flutterLocalNotificationsPlugin.initialize(initializationsSettings, onSelectNotification: (String payload) async {
       try{
         if(payload != null && payload.isNotEmpty) {
-          MyApp.navigatorKey.currentState.push(
-              MaterialPageRoute(builder: (context) => OrderDetailsScreen(orderModel: null, orderId: int.parse(payload))));
+          MyApp.navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => OrderDetailsScreen(orderModel: null, orderId: int.parse(payload))));
         }
-      }catch (e) {
-        
-      }
-      
+      }catch (e) {}
       return;
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("onMessage: ${message.data}");
-      MyNotification.showNotification(message.data, flutterLocalNotificationsPlugin);
+      MyNotification.showNotification(message.data, flutterLocalNotificationsPlugin, context);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print("onMessageApp: ${message.data}");
     });
   }
 
-  static Future<void> showNotification(Map<String, dynamic> message, FlutterLocalNotificationsPlugin fln) async {
+  static Future<void> showNotification(Map<String, dynamic> message, FlutterLocalNotificationsPlugin fln, BuildContext context) async {
     if(message['image'] != null && message['image'].isNotEmpty) {
       try{
         await showBigPictureNotificationHiddenLargeIcon(message, fln);
       }catch(e) {
-        await showBigTextNotification(message, fln);
+        await showBigTextNotification(message, fln, context);
       }
     }else {
-      await showBigTextNotification(message, fln);
+      await showBigTextNotification(message, fln, context);
     }
   }
 
@@ -61,10 +59,14 @@ class MyNotification {
     await fln.show(0, _title, _body, platformChannelSpecifics, payload: _orderID);
   }
 
-  static Future<void> showBigTextNotification(Map<String, dynamic> message, FlutterLocalNotificationsPlugin fln) async {
+  static Future<void> showBigTextNotification(Map<String, dynamic> message, FlutterLocalNotificationsPlugin fln, BuildContext context) async {
     String _title = message['title'];
     String _body = message['body'];
     String _orderID = message['order_id'];
+    bool _isReview =  _body == "delivered" ? true : false;
+
+    print('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD$_isReview');
+
     BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
       _body, htmlFormatBigText: true,
       contentTitle: _title, htmlFormatContentTitle: true,
@@ -112,10 +114,11 @@ class MyNotification {
 
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
   print('background: ${message.data}');
+  BuildContext context;
   var androidInitialize = new AndroidInitializationSettings('notification_icon');
   var iOSInitialize = new IOSInitializationSettings();
   var initializationsSettings = new InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   flutterLocalNotificationsPlugin.initialize(initializationsSettings);
-  MyNotification.showNotification(message.data, flutterLocalNotificationsPlugin);
+  MyNotification.showNotification(message.data, flutterLocalNotificationsPlugin, context);
 }

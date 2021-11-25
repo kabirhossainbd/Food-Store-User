@@ -23,10 +23,10 @@ class ComboOfferView extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Consumer<ComboOfferProvider>(
-      builder: (context, setMenu, child) {
+      builder: (context, combo, child) {
         return Column(
           children: [
-           Padding(
+            Padding(
               padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
               child: TitleWidget(title: getTranslated('combo_offer', context), onTap: () {
                 Navigator.pushNamed(context, Routes.getSetMenuRoute());
@@ -34,32 +34,32 @@ class ComboOfferView extends StatelessWidget {
             ),
 
             SizedBox(
-              height: 220,
-              child: setMenu.setMenuList != null ? setMenu.setMenuList.length > 0 ? ListView.builder(
+              height: 250,
+              child: combo.comboList != null ? combo.comboList.length > 0 ? ListView.builder(
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.only(left: Dimensions.PADDING_SIZE_SMALL),
-                itemCount: setMenu.setMenuList.length > 5 ? 5 : setMenu.setMenuList.length,
+                itemCount: combo.comboList.length,
                 itemBuilder: (context, index){
 
                   double _startingPrice;
                   double _endingPrice;
-                  if(setMenu.setMenuList[index].choiceOptions.length != 0) {
+                  if(combo.comboList[index].choiceOptions.length != 0) {
                     List<double> _priceList = [];
-                    setMenu.setMenuList[index].variations.forEach((variation) => _priceList.add(variation.price));
+                    combo.comboList[index].variations.forEach((variation) => _priceList.add(variation.price));
                     _priceList.sort((a, b) => a.compareTo(b));
                     _startingPrice = _priceList[0];
                     if(_priceList[0] < _priceList[_priceList.length-1]) {
                       _endingPrice = _priceList[_priceList.length-1];
                     }
                   }else {
-                    _startingPrice = setMenu.setMenuList[index].price;
+                    _startingPrice = combo.comboList[index].price;
                   }
 
-                  double _discount = setMenu.setMenuList[index].price - PriceConverter.convertWithDiscount(context,
-                      setMenu.setMenuList[index].price, setMenu.setMenuList[index].discount, setMenu.setMenuList[index].discountType);
+                  double _discount = combo.comboList[index].price - PriceConverter.convertWithDiscount(context,
+                      combo.comboList[index].price, combo.comboList[index].discount.toDouble(), combo.comboList[index].discountType);
 
-                  bool _isAvailable = DateConverter.isAvailable(setMenu.setMenuList[index].availableTimeStarts, setMenu.setMenuList[index].availableTimeEnds, context);
+                  bool _isAvailable = DateConverter.isAvailable(combo.comboList[index].availableTimeStarts, combo.comboList[index].availableTimeEnds, context);
 
                   return Padding(
                     padding: EdgeInsets.only(right: Dimensions.PADDING_SIZE_SMALL, bottom: 5),
@@ -67,114 +67,131 @@ class ComboOfferView extends StatelessWidget {
                       onTap: () {
                         ResponsiveHelper.isMobile(context) ?
                         showModalBottomSheet(context: context, isScrollControlled: true, backgroundColor: Colors.transparent, builder: (con) => CartBottomSheet(
-                          product: setMenu.setMenuList[index], fromSetMenu: true,
+                          product: combo.comboList[index], fromSetMenu: true,
                           callback: (CartModel cartModel) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('added_to_cart', context)), backgroundColor: Colors.green));
                           },
                         )):
                         showDialog(context: context, builder: (con) => Dialog(
                           child: CartBottomSheet(
-                            product: setMenu.setMenuList[index], fromSetMenu: true,
+                            product: combo.comboList[index], fromSetMenu: true,
                             callback: (CartModel cartModel) {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('added_to_cart', context)), backgroundColor: Colors.green));
                             },
                           ),
                         ));
                       },
-                      child: Container(
-                        height: 220,
-                        width: 170,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [BoxShadow(
-                              color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],
-                              blurRadius: 5, spreadRadius: 1,
-                            )]
-                        ),
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                          Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                                child: FadeInImage.assetNetwork(
-                                  placeholder: Images.placeholder_rectangle, height: 110, width: 170, fit: BoxFit.cover,
-                                  image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${setMenu.setMenuList[index].image}',
-                                  imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_rectangle, height: 110, width: 170, fit: BoxFit.cover),
-                                ),
-                              ),
-                              _isAvailable ? SizedBox() : Positioned(
-                                top: 0, left: 0, bottom: 0, right: 0,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                                    color: Colors.black.withOpacity(0.6),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 170,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: ColorResources.getBackgroundColor(context),
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [BoxShadow(
+                                  color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],
+                                  blurRadius: 5, spreadRadius: 1,
+                                )]
+                            ),
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
+                              Expanded(
+                                flex: 6,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: Images.placeholder_image,
+                                    fit: BoxFit.fitWidth,
+                                    image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${combo.comboList[index].image}',
+                                    width: ResponsiveHelper.isMobile(context)
+                                        ? 110
+                                        : ResponsiveHelper.isTab(context)
+                                        ? 140
+                                        : ResponsiveHelper.isDesktop(context)
+                                        ? 140
+                                        : null,
+                                    height: ResponsiveHelper.isMobile(context)
+                                        ? 120
+                                        : ResponsiveHelper.isTab(context)
+                                        ? 140
+                                        : ResponsiveHelper.isDesktop(context)
+                                        ? 140
+                                        : null,
+                                    imageErrorBuilder: (c, o, s) => Image.asset( Images.placeholder_image),
                                   ),
-                                  child: Text(getTranslated('not_available_now', context), textAlign: TextAlign.center, style: rubikRegular.copyWith(
-                                    color: Colors.white, fontSize: Dimensions.FONT_SIZE_SMALL,
-                                  )),
                                 ),
                               ),
-                            ],
+
+                              Expanded(
+                                flex: 4,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
+                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+                                    Text(
+                                      combo.comboList[index].name,
+                                      style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL),
+                                      maxLines: 1, overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+
+                                    RatingBar(
+                                      rating: combo.comboList[index].rating.length > 0 ? double.parse(combo.comboList[index].rating[0].average) : 0.0,
+                                      size: 12,
+                                    ),
+                                    SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            '${PriceConverter.convertPrice(context, _startingPrice, discount: combo.comboList[index].discount.toDouble(),
+                                                discountType: combo.comboList[index].discountType, asFixed: 1)}''${_endingPrice!= null
+                                                ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: combo.comboList[index].discount.toDouble(),
+                                                discountType: combo.comboList[index].discountType, asFixed: 1)}' : ''}',
+                                            style: rubikBold.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL),
+                                          ),
+                                        ),
+                                        _discount > 0 ? SizedBox() : Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1.color),
+                                      ],
+                                    ),
+                                    _discount > 0 ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                      Text(
+                                        '${PriceConverter.convertPrice(context, _startingPrice, asFixed: 1)}'
+                                            '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, asFixed: 1)}' : ''}',
+                                        style: rubikBold.copyWith(
+                                          fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL,
+                                          color: ColorResources.COLOR_GREY,
+                                          decoration: TextDecoration.lineThrough,
+                                        ),
+                                      ),
+                                      Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1.color),
+                                    ]) : SizedBox(),
+                                  ]),
+                                ),
+                              ),
+
+                            ]),
                           ),
-
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                                Text(
-                                  setMenu.setMenuList[index].name,
-                                  style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL),
-                                  maxLines: 2, overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-
-                                RatingBar(
-                                  rating: setMenu.setMenuList[index].rating.length > 0 ? double.parse(setMenu.setMenuList[index].rating[0].average) : 0.0,
-                                  size: 12,
-                                ),
-                                SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        '${PriceConverter.convertPrice(context, _startingPrice, discount: setMenu.setMenuList[index].discount,
-                                            discountType: setMenu.setMenuList[index].discountType, asFixed: 1)}''${_endingPrice!= null
-                                            ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: setMenu.setMenuList[index].discount,
-                                            discountType: setMenu.setMenuList[index].discountType, asFixed: 1)}' : ''}',
-                                        style: rubikBold.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL),
-                                      ),
-                                    ),
-                                    _discount > 0 ? SizedBox() : Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1.color),
-                                  ],
-                                ),
-                                _discount > 0 ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                  Flexible(
-                                    child: Text(
-                                      '${PriceConverter.convertPrice(context, _startingPrice, asFixed: 1)}'
-                                          '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, asFixed: 1)}' : ''}',
-                                      style: rubikBold.copyWith(
-                                        fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL,
-                                        color: ColorResources.COLOR_GREY,
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
-                                    ),
-                                  ),
-                                  Icon(Icons.add, color: Theme.of(context).textTheme.bodyText1.color),
-                                ]) : SizedBox(),
-                              ]),
+                          _isAvailable ? SizedBox() : Positioned(
+                            top: 0, left: 0, bottom: 100, right: 0,
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                                color: Colors.black.withOpacity(0.6),
+                              ),
+                              child: Text(getTranslated('not_available_now', context), textAlign: TextAlign.center, style: rubikRegular.copyWith(
+                                color: Colors.white, fontSize: Dimensions.FONT_SIZE_SMALL,
+                              )),
                             ),
                           ),
-
-                        ]),
+                        ],
                       ),
                     ),
                   );
                 },
-              ) : Center(child: Text(getTranslated('no_combo_offer_available', context))) : SetMenuShimmer(),
+              ) : Center(child: Text(getTranslated('no_set_menu_available', context))) : SetMenuShimmer(),
             ),
           ],
         );
@@ -205,7 +222,7 @@ class SetMenuShimmer extends StatelessWidget {
           child: Shimmer(
             duration: Duration(seconds: 1),
             interval: Duration(seconds: 1),
-            enabled: Provider.of<ComboOfferProvider>(context).setMenuList == null,
+            enabled: Provider.of<ComboOfferProvider>(context).comboList == null,
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
               Container(

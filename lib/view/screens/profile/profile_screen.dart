@@ -40,29 +40,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController _passwordController;
   TextEditingController _confirmPasswordController;
 
-  File file;
-  PickedFile data;
-  final picker = ImagePicker();
+
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
   bool _isLoggedIn;
 
-  void _choose() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery, imageQuality: 50, maxHeight: 500, maxWidth: 500);
-    setState(() {
-      if (pickedFile != null) {
-        file = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
-
-  _pickImage() async {
-    data = await picker.getImage(source: ImageSource.gallery, maxHeight: 100, maxWidth: 100, imageQuality: 20);
-    setState(() {
-
-    });
-  }
 
   @override
   void initState() {
@@ -87,10 +68,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (Provider.of<ProfileProvider>(context, listen: false).userInfoModel != null) {
       UserInfoModel _userInfoModel = Provider.of<ProfileProvider>(context, listen: false).userInfoModel;
-      _firstNameController.text = _userInfoModel.fName ?? '';
-      _lastNameController.text = _userInfoModel.lName ?? '';
-      _phoneNumberController.text = _userInfoModel.phone ?? '';
-      _emailController.text = _userInfoModel.email ?? '';
+      _firstNameController.text = _userInfoModel.data.fName ?? '';
+      _lastNameController.text = _userInfoModel.data.lName ?? '';
+      _phoneNumberController.text = _userInfoModel.data.phone ?? '';
+      _emailController.text = _userInfoModel.data.email ?? '';
     }
   }
 
@@ -123,42 +104,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 border: Border.all(color: ColorResources.COLOR_GREY_CHATEAU, width: 3),
                                 shape: BoxShape.circle,
                               ),
-                              child: InkWell(
-                                onTap: ResponsiveHelper.isMobilePhone() ? _choose : _pickImage,
-                                child: Stack(
-                                  clipBehavior: Clip.none, children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: file != null ? Image.file(file, width: 80, height: 80, fit: BoxFit.fill) : data != null
-                                          ? Image.network(data.path, width: 80, height: 80, fit: BoxFit.fill)
-                                          : FadeInImage.assetNetwork(
-                                        placeholder: Images.placeholder_user, width: 80, height: 80, fit: BoxFit.cover,
-                                        image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}/${profileProvider.userInfoModel.image}',
-                                        imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_user, width: 80, height: 80, fit: BoxFit.cover,),
+                              child: Stack(
+                                clipBehavior: Clip.none, children: [
+                                ClipOval(child: profileProvider.pickedFile != null ? ResponsiveHelper.isWeb() ? Image.network(
+                                  profileProvider.pickedFile.path, width: 100, height: 100, fit: BoxFit.cover,
+                                ) : Image.file(
+                                  File(profileProvider.pickedFile.path), width: 100, height: 100, fit: BoxFit.cover,
+                                ) :FadeInImage.assetNetwork(
+                                  placeholder: Images.placeholder_image, width: 80, height: 80, fit: BoxFit.cover,
+                                  image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}/${profileProvider.userInfoModel.data.image}',
+                                  imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_image, width: 80, height: 80, fit: BoxFit.cover,),
+                                ),),
+                                  Positioned(
+                                    bottom: 15,
+                                    right: -10,
+                                    child: InkWell(onTap: () => profileProvider.pickImage(), child: Container(
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: ColorResources.BORDER_COLOR,
+                                        border: Border.all(width: 2, color: ColorResources.COLOR_GREY_CHATEAU),
                                       ),
-                                    ),
-                                    Positioned(
-                                      bottom: 15,
-                                      right: -10,
-                                      child: InkWell(onTap: _choose, child: Container(
-                                        alignment: Alignment.center,
-                                        padding: EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: ColorResources.BORDER_COLOR,
-                                          border: Border.all(width: 2, color: ColorResources.COLOR_GREY_CHATEAU),
-                                        ),
-                                        child: Icon(Icons.edit, size: 13),
-                                      )),
-                                    ),
-                                  ],
-                                ),
+                                      child: Icon(Icons.edit, size: 13),
+                                    )),
+                                  ),
+                                ],
                               ),
                             ),
                             // for name
                             Center(
                                 child: Text(
-                                  '${profileProvider.userInfoModel.fName} ${profileProvider.userInfoModel.lName}',
+                                  '${profileProvider.userInfoModel.data.fName} ${profileProvider.userInfoModel.data.lName}',
                                   style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),
                                 )),
 
@@ -170,7 +147,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: 'John',
                               isShowBorder: true,
                               controller: _firstNameController,
                               focusNode: _firstNameFocus,
@@ -187,7 +163,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: 'Doe',
                               isShowBorder: true,
                               controller: _lastNameController,
                               focusNode: _lastNameFocus,
@@ -204,10 +179,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: getTranslated('demo_gmail', context),
                               isShowBorder: true,
                               controller: _emailController,
-                              isEnabled: false,
+                              isEnabled: true,
                               focusNode: _emailFocus,
                               nextFocus: _phoneNumberFocus,
 
@@ -222,7 +196,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: getTranslated('number_hint', context),
                               isShowBorder: true,
                               controller: _phoneNumberController,
                               focusNode: _phoneNumberFocus,
@@ -236,7 +209,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: getTranslated('password_hint', context),
                               isShowBorder: true,
                               controller: _passwordController,
                               focusNode: _passwordFocus,
@@ -251,7 +223,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: getTranslated('password_hint', context),
                               isShowBorder: true,
                               controller: _confirmPasswordController,
                               focusNode: _confirmPasswordFocus,
@@ -281,10 +252,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       String _phoneNumber = _phoneNumberController.text.trim();
                       String _password = _passwordController.text.trim();
                       String _confirmPassword = _confirmPasswordController.text.trim();
-                      if (profileProvider.userInfoModel.fName == _firstName &&
-                          profileProvider.userInfoModel.lName == _lastName &&
-                          profileProvider.userInfoModel.phone == _phoneNumber &&
-                          profileProvider.userInfoModel.email == _emailController.text && file == null && data == null
+                      if (profileProvider.userInfoModel.data.fName == _firstName &&
+                          profileProvider.userInfoModel.data.lName == _lastName &&
+                          profileProvider.userInfoModel.data.phone == _phoneNumber &&
+                          profileProvider.userInfoModel.data.email == _emailController.text && profileProvider.pickedFile == null
                           && _password.isEmpty && _confirmPassword.isEmpty) {
                         showCustomSnackBar(getTranslated('change_something_to_update', context), context);
                       }else if (_firstName.isEmpty) {
@@ -300,13 +271,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         showCustomSnackBar(getTranslated('password_did_not_match', context), context);
                       } else {
                         UserInfoModel updateUserInfoModel = UserInfoModel();
-                        updateUserInfoModel.fName = _firstName ?? "";
-                        updateUserInfoModel.lName = _lastName ?? "";
-                        updateUserInfoModel.phone = _phoneNumber ?? '';
+                        updateUserInfoModel.data.fName = _firstName ?? "";
+                        updateUserInfoModel.data.lName = _lastName ?? "";
+                        updateUserInfoModel.data.phone = _phoneNumber ?? '';
                         String _pass = _password ?? '';
 
                         ResponseModel _responseModel = await profileProvider.updateUserInfo(
-                          updateUserInfoModel, _pass, file, data,
+                          updateUserInfoModel, _pass,
                           Provider.of<AuthProvider>(context, listen: false).getUserToken(),
                         );
 

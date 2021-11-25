@@ -52,7 +52,8 @@ class NotLoggedInScreen extends StatelessWidget {
 
         ])
       ),
-    ) : Center(
+    ) :
+    Center(
       child: Padding(
         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [

@@ -25,7 +25,7 @@ class SearchWidget extends StatelessWidget {
           ),
           isDense: true,
           hintText: Strings.find_language,
-          fillColor: Theme.of(context).accentColor,
+          fillColor: ColorResources.getBackgroundColor(context),
           hintStyle: Theme.of(context).textTheme.headline2.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getHintColor(context)),
           filled: true,
           suffixIcon: Padding(

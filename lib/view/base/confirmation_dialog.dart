@@ -38,7 +38,7 @@ class ConfirmationDialog extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
               child: Text(
                 title, textAlign: TextAlign.center,
-                style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: Colors.red),
+                style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: Theme.of(context).primaryColor),
               ),
             ) : SizedBox(),
 

@@ -150,7 +150,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: Theme.of(context).accentColor,
+                                    color: ColorResources.getBackgroundColor(context),
                                   ),
                                   child: Stack(children: [
                                     GoogleMap(
@@ -212,7 +212,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                               height: 60,
                                               width: 200,
                                               decoration: BoxDecoration(
-                                                color: index == order.addressIndex ? Theme.of(context).accentColor : ColorResources.getBackgroundColor(context),
+                                                color: index == order.addressIndex ? ColorResources.getBackgroundColor(context) : ColorResources.getBackgroundColor(context),
                                                 borderRadius: BorderRadius.circular(10),
                                                 border: index == order.addressIndex ? Border.all(color: Theme.of(context).primaryColor, width: 2) : null,
                                               ),
@@ -350,18 +350,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         if(widget.amount < Provider.of<SplashProvider>(context, listen: false).configModel.minimumOrderValue) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(
                             'Minimum order amount is ${Provider.of<SplashProvider>(context, listen: false).configModel.minimumOrderValue}',
-                          ), backgroundColor: Colors.red));
+                          ), backgroundColor: Theme.of(context).primaryColor));
                         }else if(widget.orderType != 'take_away' && (address.addressList == null || address.addressList.length == 0 || order.addressIndex < 0)) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(getTranslated('select_an_address', context)),
-                            backgroundColor: Colors.red,
+                            backgroundColor: Theme.of(context).primaryColor,
                           ));
                         }else if (order.timeSlots == null || order.timeSlots.length == 0) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('select_a_time', context)), backgroundColor: Colors.red));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('select_a_time', context)), backgroundColor: Theme.of(context).primaryColor));
                         }else if (!_isAvailable) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(getTranslated('one_or_more_products_are_not_available_for_this_selected_time', context)),
-                            backgroundColor: Colors.red,
+                            backgroundColor: Theme.of(context).primaryColor,
                           ));
                         }else {
                           List<Cart> carts = [];
@@ -374,21 +374,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               _addOnQtyList.add(addOn.quantity);
                             });
                             carts.add(Cart(
-                              cart.product.id, cart.product.companyId ,cart.discountedPrice.toString(), '', cart.variation,
+                              cart.product.id, cart.product.companyId, cart.product.restaurantId,cart.discountedPrice.toString(), '', cart.variation,
                               cart.discountAmount, cart.quantity, cart.taxAmount, _addOnIdList, _addOnQtyList,
                             ));
                           }
+
                           order.placeOrder(
                             PlaceOrderBody(
-                              cart: carts, couponDiscountAmount: Provider.of<CouponProvider>(context, listen: false).discount,
+                              cart: carts,
+                                couponDiscountAmount: Provider.of<CouponProvider>(context, listen: false).discount,
                               couponDiscountTitle: widget.couponCode.isNotEmpty ? widget.couponCode : null,
                               deliveryAddressId: widget.orderType != 'take_away' ? Provider.of<LocationProvider>(context, listen: false)
                                   .addressList[order.addressIndex].id : 0,
                               orderAmount: widget.amount, orderNote: _noteController.text ?? '', orderType: widget.orderType,
                               paymentMethod: _isCashOnDeliveryActive ? order.paymentMethodIndex == 0 ? 'cash_on_delivery' : null : null,
-                              couponCode: widget.couponCode.isNotEmpty ? int.parse( widget.couponCode) : null,
+                              couponCode: widget.couponCode.isNotEmpty ? widget.couponCode : null,
                               branchId: _branches[order.branchIndex].id, deliveryDate: DateFormat('yyyy-MM-dd').format(_scheduleDate),
                               deliveryTime: (order.selectTimeSlot == 0 && order.selectDateSlot == 0) ? 'now' : DateFormat('HH:mm').format(_scheduleDate),
+                              companyId: carts[order.branchIndex].companyId,
+                              restaurantId: carts[order.branchIndex].restaurantId
                             ), _callback,
                           );
                         }
@@ -416,15 +420,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       }else {
        if(ResponsiveHelper.isWeb()) {
          String hostname = html.window.location.hostname;
-         String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel.id}'
+         String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel.data.id}'
              '&&callback=http://$hostname${Routes.ORDER_SUCCESS_SCREEN}/$orderID';
          html.window.open(selectedUrl,"_self");
        } else{
-         Navigator.pushReplacementNamed(context, Routes.getPaymentRoute('checkout', orderID, Provider.of<ProfileProvider>(context, listen: false).userInfoModel.id));
+         Navigator.pushReplacementNamed(context, Routes.getPaymentRoute('checkout', orderID, Provider.of<ProfileProvider>(context, listen: false).userInfoModel.data.id));
        }
       }
     }else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: Colors.red));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: Theme.of(context).primaryColor));
     }
   }
 

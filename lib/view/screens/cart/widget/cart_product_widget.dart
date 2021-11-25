@@ -53,7 +53,7 @@ class CartProductWidget extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.only(bottom: Dimensions.PADDING_SIZE_DEFAULT),
-        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(10)),
         child: Stack(children: [
           Positioned(
             top: 0, bottom: 0, right: 0, left: 0,
@@ -68,7 +68,7 @@ class CartProductWidget extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL, horizontal: Dimensions.PADDING_SIZE_SMALL),
               decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
+                color: ColorResources.getBackgroundColor(context),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [BoxShadow(
                   color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],
@@ -166,7 +166,7 @@ class CartProductWidget extends StatelessWidget {
                           Provider.of<CouponProvider>(context, listen: false).removeCouponData(true);
                           Provider.of<CartProvider>(context, listen: false).removeFromCart(cartIndex);
                         },
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: Icon(Icons.delete, color: Theme.of(context).primaryColor),
                       ),
                     ) : SizedBox(),
 

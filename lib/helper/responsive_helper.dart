@@ -29,7 +29,7 @@ class ResponsiveHelper {
         .of(context)
         .size
         .width;
-    if (size < 1300 && size >= 650) {
+    if (size < 1170 && size >= 650) {
       return true;
     } else {
       return false;
@@ -41,7 +41,7 @@ class ResponsiveHelper {
         .of(context)
         .size
         .width;
-    if (size >= 1300) {
+    if (size >= 1170) {
       return true;
     } else {
       return false;

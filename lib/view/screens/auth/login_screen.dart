@@ -13,7 +13,6 @@ import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/base/custom_text_field.dart';
 import 'package:flutter_restaurant/view/base/main_app_bar.dart';
-import 'package:flutter_restaurant/view/screens/auth/fb_login.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -50,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorResources.getBackgroundColor(context),
       appBar: ResponsiveHelper.isDesktop(context) ? PreferredSize(child: MainAppBar(), preferredSize: Size.fromHeight(80)) : null,
       body: SafeArea(
         child: Scrollbar(
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: const EdgeInsets.all(15.0),
                             child: ResponsiveHelper.isWeb() ? Consumer<SplashProvider>(
                               builder:(context, splash, child) => FadeInImage.assetNetwork(
-                                placeholder: Images.placeholder_rectangle, height: MediaQuery.of(context).size.height / 4.5,
+                                placeholder: Images.placeholder_image, height: MediaQuery.of(context).size.height / 4.5,
                                 image: splash.baseUrls != null ? '${splash.baseUrls.restaurantImageUrl}/${splash.configModel.restaurantLogo}' : '',
                                 imageErrorBuilder: (c, o, s) => Image.asset(Images.logo, height: MediaQuery.of(context).size.height / 4.5),
                               ),
@@ -94,7 +94,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                         CustomTextField(
-                          hintText: getTranslated('demo_gmail', context),
                           isShowBorder: true,
                           focusNode: _emailNumberFocus,
                           nextFocus: _passwordFocus,
@@ -108,7 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                         CustomTextField(
-                          hintText: getTranslated('password_hint', context),
                           isShowBorder: true,
                           isPassword: true,
                           isShowSuffixIcon: true,

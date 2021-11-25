@@ -41,7 +41,7 @@ class SignOutConfirmationDialog extends StatelessWidget {
                     if(ResponsiveHelper.isWeb()) {
                       Navigator.pushReplacementNamed(context, Routes.getMainRoute());
                     }else {
-                      Navigator.pushNamedAndRemoveUntil(context, Routes.getSplashRoute(), (route) => false);
+                      Navigator.pushNamedAndRemoveUntil(context, Routes.getLoginRoute(), (route) => false);
                     }
                   });
                 },

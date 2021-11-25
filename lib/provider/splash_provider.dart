@@ -17,7 +17,7 @@ class SplashProvider extends ChangeNotifier {
   BaseUrls get baseUrls => _baseUrls;
   DateTime get currentTime => _currentTime;
 
-  Future<bool> initConfig(GlobalKey<ScaffoldMessengerState> globalKey) async {
+  Future<bool> initConfig(GlobalKey<ScaffoldMessengerState> globalKey, BuildContext context) async {
     ApiResponse apiResponse = await splashRepo.getConfig();
     bool isSuccess;
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
@@ -34,7 +34,7 @@ class SplashProvider extends ChangeNotifier {
         _error = apiResponse.error.errors[0].message;
       }
       print(_error);
-      globalKey.currentState.showSnackBar(SnackBar(content: Text(_error), backgroundColor: Colors.red));
+      globalKey.currentState.showSnackBar(SnackBar(content: Text(_error), backgroundColor: Theme.of(context).primaryColor));
     }
     return isSuccess;
   }

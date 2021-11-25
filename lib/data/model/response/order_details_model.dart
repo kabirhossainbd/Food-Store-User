@@ -5,8 +5,8 @@ class OrderDetailsModel {
   int _productId;
   int _orderId;
   double _price;
-  Product _productDetails;
-  List<Variation> _variation;
+  Products _productDetails;
+  List<Variations> _variation;
   double _discountOnProduct;
   String _discountType;
   int _quantity;
@@ -22,8 +22,8 @@ class OrderDetailsModel {
         int productId,
         int orderId,
         double price,
-        Product productDetails,
-        List<Variation> variation,
+        Products productDetails,
+        List<Variations> variation,
         double discountOnProduct,
         String discountType,
         int quantity,
@@ -54,8 +54,8 @@ class OrderDetailsModel {
   int get productId => _productId;
   int get orderId => _orderId;
   double get price => _price;
-  Product get productDetails => _productDetails;
-  List<Variation> get variation => _variation;
+  Products get productDetails => _productDetails;
+  List<Variations> get variation => _variation;
   double get discountOnProduct => _discountOnProduct;
   String get discountType => _discountType;
   int get quantity => _quantity;
@@ -72,12 +72,12 @@ class OrderDetailsModel {
     _orderId = json['order_id'];
     _price = json['price'].toDouble();
     _productDetails = json['product_details'] != null
-        ? new Product.fromJson(json['product_details'])
+        ? new Products.fromJson(json['product_details'])
         : null;
     if (json['variation'] != null) {
       _variation = [];
       json['variation'].forEach((v) {
-        _variation.add(new Variation.fromJson(v));
+        _variation.add(new Variations.fromJson(v));
       });
     }
     _discountOnProduct = json['discount_on_product'].toDouble();

@@ -25,6 +25,7 @@ class CreateNewPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorResources.getBackgroundColor(context),
       appBar: CustomAppBar(context: context, title: getTranslated('create_new_password', context)),
       body: Consumer<AuthProvider>(
         builder: (context, auth, child) {
@@ -66,7 +67,7 @@ class CreateNewPasswordScreen extends StatelessWidget {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: getTranslated('password_hint', context),
+                              hintText: '',
                               isShowBorder: true,
                               isPassword: true,
                               focusNode: _passwordFocus,
@@ -83,7 +84,7 @@ class CreateNewPasswordScreen extends StatelessWidget {
                             ),
                             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                             CustomTextField(
-                              hintText: getTranslated('password_hint', context),
+                              hintText: '',
                               isShowBorder: true,
                               isPassword: true,
                               isShowSuffixIcon: true,

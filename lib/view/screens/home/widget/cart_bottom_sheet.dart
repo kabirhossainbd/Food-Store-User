@@ -17,12 +17,13 @@ import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/confirmation_dialog.dart';
 import 'package:flutter_restaurant/view/base/custom_button.dart';
 import 'package:flutter_restaurant/view/base/rating_bar.dart';
-import 'package:flutter_restaurant/view/base/zoom_image.dart';
+import 'package:flutter_restaurant/view/screens/home/widget/image_view.dart';
+import 'package:flutter_restaurant/view/screens/home/widget/image_zoom.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class CartBottomSheet extends StatelessWidget {
-  final Product product;
+  final Products product;
   final bool fromSetMenu;
   final Function callback;
   final CartModel cart;
@@ -34,7 +35,7 @@ class CartBottomSheet extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     bool fromCart = cart != null;
     Provider.of<ProductProvider>(context, listen: false).initData(product, cart);
-    Variation _variation = Variation();
+    Variations _variation = Variations();
 
     return Stack(
       children: [
@@ -42,7 +43,7 @@ class CartBottomSheet extends StatelessWidget {
           width: 550,
           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
           decoration: BoxDecoration(
-            color: Theme.of(context).accentColor,
+            color: ColorResources.getBackgroundColor(context),
             borderRadius: ResponsiveHelper.isMobile(context)
                 ? BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
                 : BorderRadius.all(Radius.circular(20)),
@@ -60,7 +61,7 @@ class CartBottomSheet extends StatelessWidget {
                   _endingPrice = _priceList[_priceList.length - 1];
                 }
               } else {
-                _startingPrice = product.price;
+                _startingPrice = product.price.toDouble();
               }
 
               List<String> _variationList = [];
@@ -78,15 +79,15 @@ class CartBottomSheet extends StatelessWidget {
                 }
               });
 
-              double price = product.price;
-              for (Variation variation in product.variations) {
+              double price = product.price.toDouble();
+              for (Variations variation in product.variations) {
                 if (variation.type == variationType) {
                   price = variation.price;
                   _variation = variation;
                   break;
                 }
               }
-              double priceWithDiscount = PriceConverter.convertWithDiscount(context, price, product.discount, product.discountType);
+              double priceWithDiscount = PriceConverter.convertWithDiscount(context, price, product.discount.toDouble(), product.discountType);
               double priceWithQuantity = priceWithDiscount * productProvider.quantity;
               double addonsCost = 0;
               List<AddOn> _addOnIdList = [];
@@ -113,9 +114,9 @@ class CartBottomSheet extends StatelessWidget {
                 price,
                 priceWithDiscount,
                 [_variation],
-                (price - PriceConverter.convertWithDiscount(context, price, product.discount, product.discountType)),
+                (price - PriceConverter.convertWithDiscount(context, price, product.discount.toDouble(), product.discountType)),
                 productProvider.quantity,
-                price - PriceConverter.convertWithDiscount(context, price, product.tax, product.taxType),
+                price - PriceConverter.convertWithDiscount(context, price, product.tax.toDouble(), product.taxType),
                 _addOnIdList,
                 product,
               );
@@ -125,66 +126,39 @@ class CartBottomSheet extends StatelessWidget {
                 child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
                   //Product
                   Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: ZoomPage(
-                        placeholder: Images.placeholder_rectangle,
-                        image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${product.image}',
-                        width: ResponsiveHelper.isMobile(context)
-                            ? 100
-                            : ResponsiveHelper.isTab(context)
-                            ? 140
-                            : ResponsiveHelper.isDesktop(context)
-                            ? 140
-                            : null,
-                        height: ResponsiveHelper.isMobile(context)
-                            ? 100
-                            : ResponsiveHelper.isTab(context)
-                            ? 140
-                            : ResponsiveHelper.isDesktop(context)
-                            ? 140
-                            : null,
+                    InkWell(
+
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ProductImageScreen(products: product,))),
+
+                      // onTap: () {
+                      //  // Navigator.pop(context);
+                      //   showDialog(context: context, builder: (BuildContext context) {
+                      //     return ProductImageScreen(products: product);
+                      //   });
+                      // },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: Images.placeholder_image,
+                          fit: BoxFit.cover,
+                          image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${product.image}',
+                          width: ResponsiveHelper.isMobile(context)
+                              ? 100
+                              : ResponsiveHelper.isTab(context)
+                              ? 140
+                              : ResponsiveHelper.isDesktop(context)
+                              ? 140
+                              : null,
+                          height: ResponsiveHelper.isMobile(context)
+                              ? 100
+                              : ResponsiveHelper.isTab(context)
+                              ? 140
+                              : ResponsiveHelper.isDesktop(context)
+                              ? 140
+                              : null,
+                          imageErrorBuilder: (c, o, s) => Image.asset( Images.placeholder_image),
+                        ),
                       ),
-
-
-
-                      // FadeInImage.assetNetwork(
-                      //   placeholder: Images.placeholder_rectangle,
-                      //   image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${product.image}',
-                      //   width: ResponsiveHelper.isMobile(context)
-                      //       ? 100
-                      //       : ResponsiveHelper.isTab(context)
-                      //           ? 140
-                      //           : ResponsiveHelper.isDesktop(context)
-                      //               ? 140
-                      //               : null,
-                      //   height: ResponsiveHelper.isMobile(context)
-                      //       ? 100
-                      //       : ResponsiveHelper.isTab(context)
-                      //           ? 140
-                      //           : ResponsiveHelper.isDesktop(context)
-                      //               ? 140
-                      //               : null,
-                      //   fit: BoxFit.cover,
-                      //   imageErrorBuilder: (c, o, s) => Image.asset(
-                      //     Images.placeholder_rectangle,
-                      //     width: ResponsiveHelper.isMobile(context)
-                      //         ? 100
-                      //         : ResponsiveHelper.isTab(context)
-                      //             ? 140
-                      //             : ResponsiveHelper.isDesktop(context)
-                      //                 ? 140
-                      //                 : null,
-                      //     height: ResponsiveHelper.isMobile(context)
-                      //         ? 100
-                      //         : ResponsiveHelper.isTab(context)
-                      //             ? 140
-                      //             : ResponsiveHelper.isDesktop(context)
-                      //                 ? 140
-                      //                 : null,
-                      //     fit: BoxFit.cover,
-                      //   ),
-                      // ),
                     ),
                     SizedBox(
                       width: 10,
@@ -204,8 +178,8 @@ class CartBottomSheet extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount, discountType: product.discountType)}'
-                              '${_endingPrice != null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount, discountType: product.discountType)}' : ''}',
+                              '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount.toDouble(), discountType: product.discountType)}'
+                              '${_endingPrice != null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount.toDouble(), discountType: product.discountType)}' : ''}',
                               style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),
                             ),
                             price == priceWithDiscount
@@ -423,7 +397,7 @@ class CartBottomSheet extends StatelessWidget {
                                         ? Container(
                                             height: 25,
                                             decoration:
-                                                BoxDecoration(borderRadius: BorderRadius.circular(5), color: Theme.of(context).accentColor),
+                                                BoxDecoration(borderRadius: BorderRadius.circular(5), color: ColorResources.getBackgroundColor(context)),
                                             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                                               Expanded(
                                                 child: InkWell(
@@ -505,7 +479,7 @@ class CartBottomSheet extends StatelessWidget {
                               onTap: (!isExistInCart) ? () {
                                 if (!isExistInCart) {
                                   Navigator.pop(context);
-                                  if ( Provider.of<CartProvider>(context, listen: false).existAnotherRestaurantProduct(_cartModel.product.restaurantId)) {
+                                  if ( Provider.of<CartProvider>(context, listen: false).existAnotherCompanyProduct(_cartModel.product.companyId)) {
                                     showDialog(context: context, barrierDismissible: false, builder: (context) => ConfirmationDialog(
                                       icon: Images.done,
                                       title: getTranslated('are_you_sure', context),
@@ -561,7 +535,7 @@ class CartBottomSheet extends StatelessWidget {
                           onTap: (!isExistInCart) ? () {
                             if (!isExistInCart) {
                               Navigator.pop(context);
-                                if ( Provider.of<CartProvider>(context, listen: false).existAnotherRestaurantProduct(_cartModel.product.restaurantId)) {
+                                if ( Provider.of<CartProvider>(context, listen: false).existAnotherCompanyProduct(_cartModel.product.companyId)) {
                                   showDialog(context: context, barrierDismissible: false, builder: (context) => ConfirmationDialog(
                                     icon: Images.done,
                                     title: getTranslated('are_you_sure', context),
@@ -569,12 +543,14 @@ class CartBottomSheet extends StatelessWidget {
                                     onYesPressed: () {
                                       Navigator.pop(context);
                                       Provider.of<CartProvider>(context, listen: false).removeAllAndAddToCart(_cartModel);
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('added_to_cart', context)), backgroundColor: Colors.green));
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('added_to_cart', context)),
+                                          backgroundColor: Colors.green, duration: Duration(milliseconds: 500)));
                                     },
                                   ));
                                 } else {
                                   Provider.of<CartProvider>(context, listen: false).addToCart(_cartModel, cartIndex);
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('added_to_cart', context)), backgroundColor: Colors.green));
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('added_to_cart', context)),
+                                      backgroundColor: Colors.green, duration: Duration(milliseconds: 500)));
                                 }
                             }
                           } : null,

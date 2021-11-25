@@ -318,7 +318,7 @@ class _MenuWidget extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(4),
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor),
                     child: Center(
                       child: Text(
                         Provider.of<CartProvider>(context).cartList.length.toString(),

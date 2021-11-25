@@ -1,24 +1,32 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
+import 'package:flutter_restaurant/data/model/response/category_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/data/model/response/restaurant_model.dart';
 import 'package:flutter_restaurant/data/repository/resturant_repo.dart';
 import 'package:flutter_restaurant/helper/api_checker.dart';
-import 'package:universal_html/js.dart';
+import 'package:flutter_restaurant/view/screens/restaurant/all_restaurant_screen.dart';
+import 'package:flutter_restaurant/view/screens/restaurant/demo/home_demo.dart';
+import 'package:flutter_restaurant/view/screens/restaurant/widget/prov_c.dart';
+
+
+const categoryHeight = 45.0;
+const productHeight = 90.0;
 
 class RestaurantProvider extends ChangeNotifier {
   final RestaurantRepo restaurantRepo;
-
   RestaurantProvider({@required this.restaurantRepo});
 
+  int _tabIndex = 0;
+  int get tabIndex => _tabIndex;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   int _categoryIndex = 0;
   int get categoryIndex => _categoryIndex;
-  List<Product> _restaurantProductList;
-  List<Product> get restaurantProductList => _restaurantProductList;
+  List<Products> _restaurantProductList;
+  List<Products> get restaurantProductList => _restaurantProductList;
   List<RestaurantModel> _restaurantList;
   List<RestaurantModel> get restaurantList => _restaurantList;
 
@@ -38,20 +46,25 @@ class RestaurantProvider extends ChangeNotifier {
 
   void getRestaurantProductList(BuildContext context, String restaurantID) async {
     _restaurantProductList = null;
-    notifyListeners();
+
     ApiResponse apiResponse = await restaurantRepo.getResProductList(restaurantID);
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
       _restaurantProductList = [];
-      apiResponse.response.data.forEach((restaurant) => _restaurantProductList.add(Product.fromJson(restaurant)));
-      notifyListeners();
+      apiResponse.response.data.forEach((restaurant) => _restaurantProductList.add(Products.fromJson(restaurant)));
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(apiResponse.error.toString())));
     }
+    notifyListeners();
   }
 
   void setCategoryIndex(int index) {
     _categoryIndex = index;
     notifyListeners();
+  }
+
+  void setTabIndex(int index) {
+    _tabIndex = index;
   }
 
 }

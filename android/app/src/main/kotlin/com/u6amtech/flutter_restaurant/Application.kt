@@ -1,4 +1,4 @@
-package com.foodstore
+package com.thefoodstore
 
 import io.flutter.app.FlutterApplication
 import io.flutter.plugin.common.PluginRegistry

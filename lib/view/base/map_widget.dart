@@ -58,7 +58,7 @@ class _MapWidgetState extends State<MapWidget> {
                 padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  color: Theme.of(context).accentColor,
+                  color: ColorResources.getBackgroundColor(context),
                   boxShadow: [BoxShadow(color: Colors.grey[300], spreadRadius: 3, blurRadius: 10)],
                 ),
                 child: Column(

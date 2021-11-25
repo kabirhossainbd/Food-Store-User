@@ -179,4 +179,5 @@ class AuthRepo {
     await sharedPreferences.remove(AppConstants.USER_PASSWORD);
     return await sharedPreferences.remove(AppConstants.USER_NUMBER);
   }
+
 }

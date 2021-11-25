@@ -24,6 +24,7 @@ class OrderModel {
   String _orderType;
   String _deliveryTime;
   String _deliveryDate;
+  int _companyId;
 
   OrderModel(
       {int id,
@@ -49,7 +50,8 @@ class OrderModel {
         int detailsCount,
         String deliveryTime,
         String deliveryDate,
-        String orderType}) {
+        String orderType,
+        int companyId}) {
     this._id = id;
     this._userId = userId;
     this._orderAmount = orderAmount;
@@ -73,6 +75,7 @@ class OrderModel {
     this._orderType = orderType;
     this._deliveryTime = deliveryTime;
     this._deliveryDate = deliveryDate;
+    this._companyId = companyId;
   }
 
   int get id => _id;
@@ -101,6 +104,7 @@ class OrderModel {
   String get orderType => _orderType;
   String get deliveryTime => _deliveryTime;
   String get deliveryDate => _deliveryDate;
+  int get companyId => _companyId;
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -135,6 +139,7 @@ class OrderModel {
     _orderType = json['order_type'];
     _deliveryTime = json['delivery_time'];
     _deliveryDate = json['delivery_date'];
+    _companyId = json['company_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -166,6 +171,7 @@ class OrderModel {
     data['order_type'] = this._orderType;
     data['delivery_time'] = this._deliveryTime;
     data['delivery_date'] = this._deliveryDate;
+    data['company_id'] = this._companyId;
     return data;
   }
 }

@@ -17,7 +17,7 @@ class ApiChecker {
         _errorMessage = apiResponse.error.errors[0].message;
       }
       print(_errorMessage);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_errorMessage, style: TextStyle(color: Colors.white)), backgroundColor: Colors.red));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_errorMessage, style: TextStyle(color: Colors.white)), backgroundColor: Theme.of(context).primaryColor));
     }
   }
 }

@@ -11,13 +11,13 @@ class WishListProvider extends ChangeNotifier {
   final ProductRepo productRepo;
   WishListProvider({@required this.wishListRepo, @required this.productRepo});
 
-  List<Product> _wishList;
+  List<Products> _wishList;
   List<int> _wishIdList = [];
 
-  List<Product> get wishList => _wishList;
+  List<Products> get wishList => _wishList;
   List<int> get wishIdList => _wishIdList;
 
-  void addToWishList(Product product, Function feedbackMessage) async {
+  void addToWishList(Products product, Function feedbackMessage) async {
     ApiResponse apiResponse = await wishListRepo.addWishList(product.id);
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
       Map map = apiResponse.response.data;
@@ -32,7 +32,7 @@ class WishListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeFromWishList(Product product, Function feedbackMessage) async {
+  void removeFromWishList(Products product, Function feedbackMessage) async {
     ApiResponse apiResponse = await wishListRepo.removeWishList(product.id);
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
       Map map = apiResponse.response.data;
@@ -57,7 +57,7 @@ class WishListProvider extends ChangeNotifier {
       apiResponse.response.data.forEach((wishList) async {
         ApiResponse productResponse = await productRepo.searchProduct(WishListModel.fromJson(wishList).productId.toString());
         if (productResponse.response != null && productResponse.response.statusCode == 200) {
-          Product _product = Product.fromJson(productResponse.response.data);
+          Products _product = Products.fromJson(productResponse.response.data);
           _wishList.add(_product);
           _wishIdList.add(_product.id);
           notifyListeners();

@@ -12,11 +12,11 @@ class CategoryProvider extends ChangeNotifier {
 
   List<CategoryModel> _categoryList;
   List<CategoryModel> _subCategoryList;
-  List<Product> _categoryProductList;
+  List<Products> _categoryProductList;
 
   List<CategoryModel> get categoryList => _categoryList;
   List<CategoryModel> get subCategoryList => _subCategoryList;
-  List<Product> get categoryProductList => _categoryProductList;
+  List<Products> get categoryProductList => _categoryProductList;
 
   Future<void> getCategoryList(BuildContext context, bool reload) async {
     _subCategoryList = null;
@@ -51,7 +51,7 @@ class CategoryProvider extends ChangeNotifier {
     ApiResponse apiResponse = await categoryRepo.getCategoryProductList(categoryID);
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
       _categoryProductList = [];
-      apiResponse.response.data.forEach((category) => _categoryProductList.add(Product.fromJson(category)));
+      apiResponse.response.data.forEach((category) => _categoryProductList.add(Products.fromJson(category)));
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(apiResponse.error.toString())));

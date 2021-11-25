@@ -81,4 +81,22 @@ class OrderRepo {
     }
   }
 
+
+  bool isReview() {
+    return sharedPreferences.getBool('isReview') ?? true;
+  }
+
+
+  Future checkFirstRun(BuildContext context) async {
+
+    bool isReview = sharedPreferences.getBool('isReview') ?? true;
+
+    if (isReview) {
+
+      sharedPreferences.setBool('isReview', false);
+    } else {
+      return null;
+    }
+  }
+
 }
