@@ -148,7 +148,7 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> with 
                             ),
                             flexibleSpace: FlexibleSpaceBar(
                               background: FadeInImage.assetNetwork(
-                                fit: BoxFit.cover, placeholder: Images.logo,width: 500,
+                                placeholder: Images.logo, imageScale: 10.0, fit: BoxFit.fill,
                                 image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.restaurantImageUrl}-cover/${widget.restaurantModel.coverImage}',
                                 imageErrorBuilder: (c, o, s) => Image.asset(Images.logo, height: 230, fit: BoxFit.scaleDown, color: ColorResources.COLOR_WHITE,),
                               ),

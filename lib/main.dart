@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
@@ -51,12 +50,12 @@ Future<void> main() async {
   BuildContext context;
   try {
     if (!kIsWeb) {
-      FacebookAuth.i.webInitialize(
-        appId: "563462498108804",//<-- YOUR APP_ID
-        cookie: true,
-        xfbml: true,
-        version: "v9.0",
-      );
+      // FacebookAuth.i.webInitialize(
+      //   appId: "563462498108804",//<-- YOUR APP_ID
+      //   cookie: true,
+      //   xfbml: true,
+      //   version: "v9.0",
+      // );
 
       final NotificationAppLaunchDetails notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
       if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {

@@ -30,6 +30,7 @@ import 'package:flutter_restaurant/view/screens/home/widget/combo_offer.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/restaurant_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/web_slider.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
+import 'package:flutter_restaurant/view/screens/qr_code/qr_code_screen.dart';
 import 'package:flutter_restaurant/view/screens/restaurant/widget/home.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -217,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           return restaurant.restaurantList == null ? RestaurantView() : restaurant.restaurantList.length == 0 ? SizedBox() : RestaurantView();
                         },
                       ),
-
+                      //
                       // InkWell(
                       //   onTap: () {
                       //
@@ -243,20 +244,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       //   ),
                       // ),
                       // SizedBox(height: 10,),
-                      // InkWell(
-                      //   onTap: () =>  showCupertinoDialog( context: context, builder: (context)=> AnimateDialog(
-                      //       icon: Icons.check,
-                      //       title: getTranslated('alert', context),
-                      //       isFailed: false,
-                      //       description: getTranslated('alert_description', context),
-                      //       isDescription: true,
-                      //       btnText: getTranslated('dismiss', context)),
-                      //     barrierDismissible: false,
-                      //   ),
-                      //   child: Container(
-                      //     height: 60, child: Text('CLICK with CustomScrollber', style: rubikRegular.copyWith(fontSize: 20),),
-                      //   ),
-                      // ),
+                      //
+                     // Image.asset(Images.qr_code),
+
+                      InkWell(
+                       onTap: (){
+                         Navigator.push(context, MaterialPageRoute(builder: (_) => QRCodeScreen()));
+                       },
+                        child: Container(
+                          height: 60, child: Text('Banner', style: rubikRegular.copyWith(fontSize: 20),),
+                        ),
+                      ),
 
                       Consumer<ComboOfferProvider>(
                         builder: (context, combo, child) {

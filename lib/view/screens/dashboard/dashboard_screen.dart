@@ -1,15 +1,19 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/helper/date_converter.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
+import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
+import 'package:flutter_restaurant/utill/images.dart';
+import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
 import 'package:flutter_restaurant/view/screens/dashboard/widget/cart_widget.dart';
 import 'package:flutter_restaurant/view/screens/home/home_screen.dart';
 import 'package:flutter_restaurant/view/screens/menu/menu_screen.dart';
 import 'package:flutter_restaurant/view/screens/order/order_screen.dart';
 import 'package:flutter_restaurant/view/screens/wishlist/wishlist_screen.dart';
+import 'package:provider/provider.dart';
 
 
 class DashboardScreen extends StatefulWidget {
@@ -61,8 +65,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
       },
       child: Scaffold(
+        appBar: Provider.of<SplashProvider>(context, listen: false).isRestaurantClosed() ? AppBar(
+          toolbarHeight: 40,
+          backgroundColor: Theme.of(context).primaryColor,
+          elevation: 1,
+          title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Padding(padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL), child: Image.asset(Images.closed, width: 25, height: 25)),
+            Text(
+              '${getTranslated('restaurant_is_close_now', context)} '
+                  '${DateConverter.convertTimeToTime('${Provider.of<SplashProvider>(context, listen: false).configModel.restaurantOpenTime}:00')}',
+              style: rubikRegular.copyWith(fontSize: 12, color: Colors.black),
+            ),
+          ]),
+        ) : null,
         key: _scaffoldKey,
-
         floatingActionButton: ResponsiveHelper.isDesktop(context) ? null : ResponsiveHelper.isTab(context) ? null : FloatingActionButton(
           elevation: 5,
           backgroundColor: _pageIndex == 2 ? Theme.of(context).primaryColor : Theme.of(context).cardColor,

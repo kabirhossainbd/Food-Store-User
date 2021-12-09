@@ -29,6 +29,7 @@ import 'package:flutter_restaurant/view/screens/notification/notification_screen
 import 'package:flutter_restaurant/view/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter_restaurant/view/screens/order/order_details_screen.dart';
 import 'package:flutter_restaurant/view/screens/profile/profile_screen.dart';
+import 'package:flutter_restaurant/view/screens/qr_code/qr_code_screen.dart';
 import 'package:flutter_restaurant/view/screens/rare_review/rate_review_screen.dart';
 import 'package:flutter_restaurant/view/screens/restaurant/all_restaurant_screen.dart';
 import 'package:flutter_restaurant/view/screens/search/search_result_screen.dart';
@@ -89,6 +90,7 @@ class RouterHelper {
   static Handler _deshboardHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => DashboardScreen(pageIndex: 0));
 
   static Handler _searchHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => SearchScreen());
+  static Handler _qrCodeHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => QRCodeScreen());
 
   static Handler _searchResultHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) {
     return SearchResultScreen(searchString: params['text'][0].replaceAll('-', ' '));
@@ -220,6 +222,7 @@ class RouterHelper {
    // router.define(Routes.RESTAURANT_SCREEN, handler: _restaurantHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.RESTAURANT_DETAILS_SCREEN, handler: _restaurantDetailsHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.SEARCH_SCREEN, handler: _searchHandler, transitionType: TransitionType.fadeIn);
+    router.define(Routes.QR_CODE, handler: _qrCodeHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.SEARCH_RESULT_SCREEN, handler: _searchResultHandler, transitionType: TransitionType.fadeIn);
     //router.define(Routes.CATEGORY_SCREEN, handler: _categoryHandler, transitionType: TransitionType.fadeIn);
     router.define(Routes.CART_SCREEN, handler: _cartHandler, transitionType: TransitionType.fadeIn);

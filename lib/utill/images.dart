@@ -33,6 +33,7 @@ class Images {
   static const String wallet = 'assets/image/wallet.png';
   static const String guest_login = 'assets/image/guest_login.png';
   static const String error_page = 'assets/image/errorpage.png';
+  static const String qr_code = 'assets/image/qr_code.png';
 
   // for Icon
   static const String logo = 'assets/image/logo.png';
@@ -52,6 +53,8 @@ class Images {
   static const String done_with_full_background = 'assets/icon/done_with_full_background.png';
   static const String filter_icon = 'assets/icon/filter_icon.png';
   static const String location = 'assets/icon/location.png';
+  static const String apple = 'assets/icon/apple.png';
+  static const String playstore = 'assets/icon/playstore.png';
 
   // for Image
   static const String arabic = 'assets/image/arabic.png';

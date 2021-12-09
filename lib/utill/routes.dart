@@ -13,6 +13,7 @@ class Routes {
   static const String DASHBOARD = '/';
   static const String DASHBOARD_SCREEN = '/main';
   static const String SEARCH_SCREEN = '/search';
+  static const String QR_CODE = '/qrcode';
   static const String RESTAURANT_SCREEN = '/restaurant';
   static const String RESTAURANT_DETAILS_SCREEN = '/restaurant-details';
   static const String SEARCH_RESULT_SCREEN = '/search-result';
