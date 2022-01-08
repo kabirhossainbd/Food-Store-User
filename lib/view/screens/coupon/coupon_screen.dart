@@ -44,60 +44,68 @@ class CouponScreen extends StatelessWidget {
                       width: 1170,
                       child: Column(
                        children: [
+                         coupon.couponList[coupon.couponIndex].couponType == 'refer' ? profile.userInfoModel.useCoupon != 0 ?  ListView.builder(
+                           itemCount: coupon.couponList.length,
+                           shrinkWrap: true,
+                           physics: NeverScrollableScrollPhysics(),
+                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
+                           itemBuilder: (context, index) {
+                             return  Padding(
+                               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                               child: InkWell(
+                                 onTap: () {
+                                   Clipboard.setData(ClipboardData(text: coupon.couponList[1].code));
+                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('coupon_code_copied', context)), backgroundColor: Colors.green));
+                                 },
+                                 child: Stack(children: [
 
-                         profile.userInfoModel.data.useCoupon == 0 ? SizedBox() : Padding(
-                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                           child: InkWell(
-                             onTap: () {
-                               Clipboard.setData(ClipboardData(text: coupon.couponList[4].code));
-                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(getTranslated('coupon_code_copied', context)), backgroundColor: Colors.green));
-                               },
-                             child: Stack(children: [
+                                   Image.asset(Images.coupon_bg, height: 100, width: 1170, fit: BoxFit.fitWidth, color: Theme.of(context).primaryColor),
 
-                                Image.asset(Images.coupon_bg, height: 100, width: 1170, fit: BoxFit.fitWidth, color: Theme.of(context).primaryColor),
+                                   Positioned(
+                                       top: 15,
+                                       right: 60,
+                                       child: Text(profile.userInfoModel.useCoupon.toString(), style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),)),
 
-                                Positioned(
-                                    top: 15,
-                                    right: 30,
-                                    child: Text(profile.userInfoModel.data.useCoupon.toString(), style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),)),
-                                Container(
-                                  height: 100,
-                                  alignment: Alignment.center,
-                                  child: Row(children: [
+                                   Container(
+                                     height: 100,
+                                     alignment: Alignment.center,
+                                     child: Row(children: [
 
-                                    SizedBox(width: 50),
-                                    Image.asset(Images.percentage, height: 50, width: 50),
+                                       SizedBox(width: 50),
+                                       Image.asset(Images.percentage, height: 50, width: 50),
 
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE, vertical: Dimensions.PADDING_SIZE_SMALL),
-                                      child: Image.asset(Images.line, height: 100, width: 5),
-                                    ),
+                                       Padding(
+                                         padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE, vertical: Dimensions.PADDING_SIZE_SMALL),
+                                         child: Image.asset(Images.line, height: 100, width: 5),
+                                       ),
 
-                              Expanded(
-                                child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-                                  SelectableText(
-                                    coupon.couponList[4].code,
-                                    style: rubikRegular.copyWith(color: ColorResources.COLOR_WHITE),
-                                  ),
-                                  SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                  Text(
-                                    '${coupon.couponList[4].discount}${coupon.couponList[4].discountType == 'percent' ? '%'
-                                        : Provider.of<SplashProvider>(context, listen: false).configModel.currencySymbol} off',
-                                    style: rubikMedium.copyWith(color: ColorResources.COLOR_WHITE, fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),
-                                  ),
-                                  SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                  Text(
-                                    '${getTranslated('valid_until', context)} ${DateConverter.isoStringToLocalDateOnly(coupon.couponList[4].expireDate)}',
-                                    style: rubikRegular.copyWith(color: ColorResources.COLOR_WHITE, fontSize: Dimensions.FONT_SIZE_SMALL),
-                                  ),
-                                ]),
-                              ),
+                                       Expanded(
+                                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+                                           SelectableText(
+                                             coupon.couponList[index].code,
+                                             style: rubikRegular.copyWith(color: ColorResources.COLOR_WHITE),
+                                           ),
+                                           SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                           Text(
+                                             '${coupon.couponList[index].discount}${coupon.couponList[index].discountType == 'percent' ? '%'
+                                                 : Provider.of<SplashProvider>(context, listen: false).configModel.currencySymbol} off',
+                                             style: rubikMedium.copyWith(color: ColorResources.COLOR_WHITE, fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),
+                                           ),
+                                           SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                           Text(
+                                             '${getTranslated('valid_until', context)} ${DateConverter.isoStringToLocalDateOnly(coupon.couponList[index].expireDate)}',
+                                             style: rubikRegular.copyWith(color: ColorResources.COLOR_WHITE, fontSize: Dimensions.FONT_SIZE_SMALL),
+                                           ),
+                                         ]),
+                                       ),
+                                     ]),
+                                   ),
+                                 ]),
+                               ),
+                             );
+                             },
+                         ) : SizedBox() : SizedBox(),
 
-                            ]),
-                          ),
-                        ]),
-                      ),
-                    ),
                          ListView.builder(
                            itemCount: coupon.couponList.length,
                            shrinkWrap: true,

@@ -20,18 +20,16 @@ import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
-import 'package:flutter_restaurant/view/base/animated_dialog.dart';
 import 'package:flutter_restaurant/view/base/custom_dialog.dart';
 import 'package:flutter_restaurant/view/base/main_app_bar.dart';
 import 'package:flutter_restaurant/view/base/title_widget.dart';
+import 'package:flutter_restaurant/view/screens/checkout/successfull_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/banner_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/combo_offer.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/restaurant_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/web_slider.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
-import 'package:flutter_restaurant/view/screens/qr_code/qr_code_screen.dart';
-import 'package:flutter_restaurant/view/screens/restaurant/widget/home.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -81,7 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadData(BuildContext context, bool reload) async {
 
     if(Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
-      await Provider.of<ProfileProvider>(context, listen: false).getUserInfo(context);
       await Provider.of<ProfileProvider>(context, listen: false).getUserInfo(context);
     }
     await Provider.of<RestaurantProvider>(context, listen: false).getRestaurant(context, reload);
@@ -247,14 +244,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       //
                      // Image.asset(Images.qr_code),
 
-                      InkWell(
-                       onTap: (){
-                         Navigator.push(context, MaterialPageRoute(builder: (_) => QRCodeScreen()));
-                       },
-                        child: Container(
-                          height: 60, child: Text('Banner', style: rubikRegular.copyWith(fontSize: 20),),
-                        ),
-                      ),
+                      // InkWell(
+                      //  onTap: (){
+                      //    Navigator.push(context, MaterialPageRoute(builder: (_) => OrderSuccessfulScreen()));
+                      //  },
+                      //   child: Container(
+                      //     height: 60, child: Text('Banner', style: rubikRegular.copyWith(fontSize: 20),),
+                      //   ),
+                      // ),
 
                       Consumer<ComboOfferProvider>(
                         builder: (context, combo, child) {

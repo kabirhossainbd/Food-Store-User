@@ -30,7 +30,7 @@ class InviteFriends extends StatelessWidget {
       appBar: ResponsiveHelper.isDesktop(context) ? PreferredSize(child: MainAppBar(), preferredSize: Size.fromHeight(80)): CustomAppBar(context: context, title: getTranslated('invite friends', context)),
       body: _isLoggedIn ? Consumer<ProfileProvider>(
         builder: (context, refer, child) {
-          return refer.userInfoModel != null ? refer.userInfoModel.data.referId != null ? Scrollbar(
+          return refer.userInfoModel != null ? refer.userInfoModel.referId != null ? Scrollbar(
             child: SingleChildScrollView(
               child: Center(
                 child: SizedBox(
@@ -53,14 +53,14 @@ class InviteFriends extends StatelessWidget {
                           ),
                           child: Row( crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(refer.userInfoModel.data.referId, style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_DEFAULT),),
+                              Text(refer.userInfoModel.referId, style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_DEFAULT),),
 
                               SizedBox(width: Dimensions.PADDING_SIZE_DEFAULT,),
                               Container(width: 1, height: 25, color: ColorResources.getGrayColor(context)),
                               SizedBox(width: Dimensions.PADDING_SIZE_DEFAULT,),
                               InkWell(
                                 onTap: () {
-                                  Clipboard.setData(ClipboardData(text: refer.userInfoModel.data.referId));
+                                  Clipboard.setData(ClipboardData(text: refer.userInfoModel.referId));
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Refer Code Copied'), backgroundColor: Colors.green));
                                 },
                                 child: Row(

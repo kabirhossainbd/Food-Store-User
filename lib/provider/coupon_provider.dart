@@ -14,6 +14,8 @@ class CouponProvider extends ChangeNotifier {
   String _code = '';
   bool _isLoading = false;
 
+  int _couponIndex = 0;
+  int get couponIndex => _couponIndex;
   CouponModel get coupon => _coupon;
   double get discount => _discount;
   String get code => _code;
@@ -46,7 +48,7 @@ class CouponProvider extends ChangeNotifier {
             _discount = _coupon.discount * order / 100;
           }
         }else {
-          _discount = _coupon.discount;
+          _discount = _coupon.discount.toDouble();
         }
       } else {
         _discount = 0.0;

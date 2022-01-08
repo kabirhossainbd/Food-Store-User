@@ -3,10 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/order_model.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
+import 'package:flutter_restaurant/provider/order_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
+import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
+import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/custom_app_bar.dart';
+import 'package:flutter_restaurant/view/base/custom_button.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 import 'package:flutter_restaurant/view/screens/checkout/widget/cancel_dialog.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -35,13 +42,37 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => _exitApp(context),
-      child: Scaffold(
+    return Consumer<OrderProvider>(
+      builder: (context, order, child) => Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
-        appBar: CustomAppBar(context: context, title: getTranslated('PAYMENT', context), onBackPressed: () => _exitApp(context)),
+        appBar: CustomAppBar(context: context, title: getTranslated('PAYMENT', context), onBackPressed: () => Navigator.pop(context)),
+        bottomSheet: Container(
+         height: 60,
+        // padding: EdgeInsets.all(12),
+         margin: EdgeInsets.all(12),
+         child: !order.isLoading ? Row(children: [
+           Expanded(child: SizedBox(
+             height: 50,
+             child: TextButton(
+               onPressed: () {
+                 Navigator.pushNamedAndRemoveUntil(context, Routes.getMainRoute(), (route) => false);
+               },
+               style: TextButton.styleFrom(
+                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(width: 2, color: Theme.of(context).primaryColor)),
+               ),
+               child: Text(getTranslated('home', context), style: rubikBold.copyWith(color: Theme.of(context).primaryColor)),
+             ),
+           )),
+           SizedBox(width: 10),
+           Expanded(
+               child:CustomButton(btnTxt: 'Cash On Delivery',
+               onTap: () => order.updateCOD(widget.orderModel.id.toString(), context, false),
+               )),
+         ]) : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),
+
+       ),
         body: Center(
-          child: Container(
+          child:Container(
             width: 1170,
             child: Stack(
               children: [
@@ -88,12 +119,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
-  Future<bool> _exitApp(BuildContext context) async {
-    if (await controllerGlobal.canGoBack()) {
-      controllerGlobal.goBack();
-      return Future.value(false);
-    } else {
-      return showDialog(context: context, builder: (context) => CancelDialog(orderID: widget.orderModel.id, fromCheckout: widget.fromCheckout));
-    }
-  }
+  // Future<bool> _exitApp(BuildContext context) async {
+  //   if (await controllerGlobal.canGoBack()) {
+  //     controllerGlobal.goBack();
+  //     return Future.value(false);
+  //   } else {
+  //     return showDialog(context: context, builder: (context) => CancelDialog(orderID: widget.orderModel.id, fromCheckout: widget.fromCheckout));
+  //   }
+  // }
 }

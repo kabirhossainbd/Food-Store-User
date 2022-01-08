@@ -45,10 +45,10 @@ class ChangeMethodDialog extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                  Expanded(child: CustomButton(btnTxt: getTranslated('yes', context), onTap: () async {
-                    await order.updatePaymentMethod(orderID, callback);
-                    Navigator.pop(context);
-                  })),
+                  Expanded(child: CustomButton(
+                    btnTxt: getTranslated('yes', context),
+                    onTap: () => order.updateCOD(orderID.toString(), context, true),
+                  )),
                 ]) : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),
 
               ]),

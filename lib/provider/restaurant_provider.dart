@@ -1,14 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/base/api_response.dart';
-import 'package:flutter_restaurant/data/model/response/category_model.dart';
 import 'package:flutter_restaurant/data/model/response/product_model.dart';
 import 'package:flutter_restaurant/data/model/response/restaurant_model.dart';
 import 'package:flutter_restaurant/data/repository/resturant_repo.dart';
 import 'package:flutter_restaurant/helper/api_checker.dart';
-import 'package:flutter_restaurant/view/screens/restaurant/all_restaurant_screen.dart';
-import 'package:flutter_restaurant/view/screens/restaurant/demo/home_demo.dart';
-import 'package:flutter_restaurant/view/screens/restaurant/widget/prov_c.dart';
 
 
 const categoryHeight = 45.0;
@@ -29,7 +25,6 @@ class RestaurantProvider extends ChangeNotifier {
   List<Products> get restaurantProductList => _restaurantProductList;
   List<RestaurantModel> _restaurantList;
   List<RestaurantModel> get restaurantList => _restaurantList;
-
 
   Future<void> getRestaurant(BuildContext context, bool reload) async {
     if(_restaurantList == null || reload) {

@@ -9,8 +9,8 @@ import 'package:flutter_restaurant/data/model/response/order_model.dart';
 import 'package:flutter_restaurant/data/model/response/timeslote_model.dart';
 import 'package:flutter_restaurant/data/repository/order_repo.dart';
 import 'package:flutter_restaurant/helper/api_checker.dart';
-import 'package:flutter_restaurant/provider/theme_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_restaurant/utill/routes.dart';
+import 'package:flutter_restaurant/view/base/custom_snackbar.dart';
 
 class OrderProvider extends ChangeNotifier {
   final OrderRepo orderRepo;
@@ -192,14 +192,21 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updatePaymentMethod(String orderID, Function callback) async {
+  Future<bool> updateCOD(String orderID, BuildContext context, bool isDetailsScreen) async {
     _isLoading = true;
-    notifyListeners();
+   notifyListeners();
     ApiResponse apiResponse = await orderRepo.updatePaymentMethod(orderID);
-    _isLoading = false;
+    bool _isSuccess;
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      if(isDetailsScreen){
+        Navigator.pop(context);
+      }else{
+        Navigator.pushNamedAndRemoveUntil(context, Routes.getMainRoute(), (route) => false);
+      }
+      showCustomSnackBar(apiResponse.response.data['message'], context, isError: false);
+      _isSuccess = true;
       int orderIndex;
-      for(int index=0; index<_runningOrderList.length; index++) {
+      for(int index = 0; index < _runningOrderList.length; index++) {
         if(_runningOrderList[index].id.toString() == orderID) {
           orderIndex = index;
           break;
@@ -209,12 +216,13 @@ class OrderProvider extends ChangeNotifier {
         _runningOrderList[orderIndex].paymentMethod = 'cash_on_delivery';
       }
       _trackModel.paymentMethod = 'cash_on_delivery';
-      callback(apiResponse.response.data['message'], true);
     } else {
-      print(apiResponse.error.errors[0].message);
-      callback(apiResponse.error.errors[0].message, false);
+      ApiChecker.checkApi(context, apiResponse);
+      _isSuccess = false;
     }
+    _isLoading = false;
     notifyListeners();
+    return _isSuccess;
   }
 
   void setOrderType(String type, {bool notify = true}) {

@@ -415,7 +415,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         onTap: () async {
                           if(ResponsiveHelper.isWeb()) {
                             String hostname = html.window.location.hostname;
-                            String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=${order.trackModel.id}&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel.data.id}'
+                            String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=${order.trackModel.id}&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel.id}'
                                 '&&callback=http://$hostname${Routes.ORDER_SUCCESS_SCREEN}/${order.trackModel.id}';
                             html.window.open(selectedUrl, "_self");
                           }else {

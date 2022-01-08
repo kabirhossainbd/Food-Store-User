@@ -156,10 +156,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     GoogleMap(
                                       mapType: MapType.normal,
                                       initialCameraPosition: CameraPosition(
-                                          target: LatLng(
-                                        double.parse(_branches[0].latitude),
-                                        double.parse(_branches[0].longitude),
-                                      ), zoom: ResponsiveHelper.isMobile(context) ? 18 : 8,
+                                        target: LatLng(
+                                          double.parse(_branches[0].latitude),
+                                          double.parse(_branches[0].longitude),
+                                        ), zoom: ResponsiveHelper.isMobile(context) ? 18 : 8,
                                       ),
                                       zoomControlsEnabled: true,
                                       markers: _markers,
@@ -381,18 +381,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                           order.placeOrder(
                             PlaceOrderBody(
-                              cart: carts,
+                                cart: carts,
                                 couponDiscountAmount: Provider.of<CouponProvider>(context, listen: false).discount,
-                              couponDiscountTitle: widget.couponCode.isNotEmpty ? widget.couponCode : null,
-                              deliveryAddressId: widget.orderType != 'take_away' ? Provider.of<LocationProvider>(context, listen: false)
-                                  .addressList[order.addressIndex].id : 0,
-                              orderAmount: widget.amount, orderNote: _noteController.text ?? '', orderType: widget.orderType,
-                              paymentMethod: _isCashOnDeliveryActive ? order.paymentMethodIndex == 0 ? 'cash_on_delivery' : null : null,
-                              couponCode: widget.couponCode.isNotEmpty ? widget.couponCode : null,
-                              branchId: _branches[order.branchIndex].id, deliveryDate: DateFormat('yyyy-MM-dd').format(_scheduleDate),
-                              deliveryTime: (order.selectTimeSlot == 0 && order.selectDateSlot == 0) ? 'now' : DateFormat('HH:mm').format(_scheduleDate),
-                              companyId: carts[order.branchIndex].companyId,
-                              restaurantId: carts[order.branchIndex].restaurantId
+                                couponDiscountTitle: widget.couponCode.isNotEmpty ? widget.couponCode : null,
+                                deliveryAddressId: widget.orderType != 'take_away' ? Provider.of<LocationProvider>(context, listen: false)
+                                    .addressList[order.addressIndex].id : 0,
+                                orderAmount: widget.amount, orderNote: _noteController.text ?? '', orderType: widget.orderType,
+                                paymentMethod: _isCashOnDeliveryActive ? order.paymentMethodIndex == 0 ? 'cash_on_delivery' : null : null,
+                                couponCode: widget.couponCode.isNotEmpty ? widget.couponCode : null,
+                                branchId: _branches[order.branchIndex].id, deliveryDate: DateFormat('yyyy-MM-dd').format(_scheduleDate),
+                                deliveryTime: (order.selectTimeSlot == 0 && order.selectDateSlot == 0) ? 'now' : DateFormat('HH:mm').format(_scheduleDate),
+                                companyId: carts[order.branchIndex].companyId,
+                                restaurantId: carts[order.branchIndex].restaurantId
                             ), _callback,
                           );
                         }
@@ -418,14 +418,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       if(_isCashOnDeliveryActive && Provider.of<OrderProvider>(context, listen: false).paymentMethodIndex == 0) {
         Navigator.pushReplacementNamed(context, '${Routes.ORDER_SUCCESS_SCREEN}/$orderID/success');
       }else {
-       if(ResponsiveHelper.isWeb()) {
-         String hostname = html.window.location.hostname;
-         String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel.data.id}'
-             '&&callback=http://$hostname${Routes.ORDER_SUCCESS_SCREEN}/$orderID';
-         html.window.open(selectedUrl,"_self");
-       } else{
-         Navigator.pushReplacementNamed(context, Routes.getPaymentRoute('checkout', orderID, Provider.of<ProfileProvider>(context, listen: false).userInfoModel.data.id));
-       }
+        if(ResponsiveHelper.isWeb()) {
+          String hostname = html.window.location.hostname;
+          String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=$orderID&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel.id}'
+              '&&callback=http://$hostname${Routes.ORDER_SUCCESS_SCREEN}/$orderID';
+          html.window.open(selectedUrl,"_self");
+        } else{
+          Navigator.pushReplacementNamed(context, Routes.getPaymentRoute('checkout', orderID, Provider.of<ProfileProvider>(context, listen: false).userInfoModel.id));
+        }
       }
     }else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), backgroundColor: Theme.of(context).primaryColor));

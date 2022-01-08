@@ -14,6 +14,11 @@ class UserInfoModel {
     }
     return data;
   }
+
+  @override
+  String toString() {
+    return 'UserInfoModel{data: $data}';
+  }
 }
 
 class Data {
@@ -41,6 +46,11 @@ class Data {
         this.referId,
         this.referById,
         this.useCoupon});
+
+  @override
+  String toString() {
+    return 'Data{id: $id, fName: $fName, lName: $lName, email: $email, image: $image, phone: $phone, cmFirebaseToken: $cmFirebaseToken, point: $point, referId: $referId, referById: $referById, useCoupon: $useCoupon}';
+  }
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];

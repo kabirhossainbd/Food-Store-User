@@ -1,4 +1,5 @@
 class Images {
+  static const String successful = 'assets/image/successful_image.json';
   static const String coming_soon = 'assets/image/comming_soon.png';
   static const String home = 'assets/image/home_icon.png';
   static const String more = 'assets/image/more_icon.png';

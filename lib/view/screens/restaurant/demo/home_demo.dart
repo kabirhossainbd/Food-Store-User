@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/provider/restaurant_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
-import 'package:flutter_restaurant/utill/dimensions.dart';
-import 'package:flutter_restaurant/view/screens/home/home_screen.dart';
 import 'package:flutter_restaurant/view/screens/restaurant/demo/data.dart';
 import 'package:flutter_restaurant/view/screens/restaurant/demo/test_c.dart';
-import 'package:flutter_restaurant/view/screens/restaurant/widget/prov_c.dart';
 import 'package:provider/provider.dart';
 
 class HomeDemo extends StatefulWidget {

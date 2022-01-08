@@ -89,7 +89,10 @@ class _RestaurantDetailsScreenState extends State<RestaurantDetailsScreen> with 
               tabs.add(TabCategory(
                 category: category.category,
                 index: i,
-                offsetForm: ResponsiveHelper.isDesktop(context) ? categoryHeight * i + offsetForm + 410 : categoryHeight * i + offsetForm + 260,));
+                offsetForm: ResponsiveHelper.isDesktop(context) ? categoryHeight * i + offsetForm + 410 : categoryHeight * i + offsetForm + 260),
+
+              );
+
               _items.add(CategoryItem(category: category.category));
               for( int j = 0; j< category.products.length; j++){
                 final product = category.products[j];

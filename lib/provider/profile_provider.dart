@@ -16,11 +16,11 @@ class ProfileProvider with ChangeNotifier {
 
   ProfileProvider({@required this.profileRepo});
 
-  UserInfoModel _userInfoModel;
+  Data _userInfoModel;
   PickedFile _pickedFile;
 
 
-  UserInfoModel get userInfoModel => _userInfoModel;
+  Data get userInfoModel => _userInfoModel;
   PickedFile get pickedFile => _pickedFile;
 
   Future<ResponseModel> getUserInfo(BuildContext context) async {
@@ -28,7 +28,7 @@ class ProfileProvider with ChangeNotifier {
     ResponseModel _responseModel;
     ApiResponse apiResponse = await profileRepo.getUserInfo();
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
-      _userInfoModel = UserInfoModel.fromJson(apiResponse.response.data);
+      _userInfoModel = UserInfoModel.fromJson(apiResponse.response.data).data;
       _responseModel = ResponseModel(true, 'successful');
     } else {
       String _errorMessage;
@@ -48,16 +48,16 @@ class ProfileProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<ResponseModel> updateUserInfo(UserInfoModel updateUserModel, String password, String token) async {
+  Future<ResponseModel> updateUserInfo(Data data, String password, String token) async {
     _isLoading = true;
     notifyListeners();
     ResponseModel _responseModel;
-    http.StreamedResponse response = await profileRepo.updateProfile(updateUserModel, password, _pickedFile, token);
+    http.StreamedResponse response = await profileRepo.updateProfile(data, password, _pickedFile, token);
     _isLoading = false;
     if (response.statusCode == 200) {
       Map map = jsonDecode(await response.stream.bytesToString());
       String message = map["message"];
-      _userInfoModel = updateUserModel;
+      _userInfoModel = data;
       _responseModel = ResponseModel(true, message);
       _pickedFile = null;
       print(message);

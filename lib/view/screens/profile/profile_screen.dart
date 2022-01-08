@@ -67,11 +67,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _confirmPasswordController = TextEditingController();
 
     if (Provider.of<ProfileProvider>(context, listen: false).userInfoModel != null) {
-      UserInfoModel _userInfoModel = Provider.of<ProfileProvider>(context, listen: false).userInfoModel;
-      _firstNameController.text = _userInfoModel.data.fName ?? '';
-      _lastNameController.text = _userInfoModel.data.lName ?? '';
-      _phoneNumberController.text = _userInfoModel.data.phone ?? '';
-      _emailController.text = _userInfoModel.data.email ?? '';
+      Data _userInfoModel = Provider.of<ProfileProvider>(context, listen: false).userInfoModel;
+      _firstNameController.text = _userInfoModel.fName ?? '';
+      _lastNameController.text = _userInfoModel.lName ?? '';
+      _phoneNumberController.text = _userInfoModel.phone ?? '';
+      _emailController.text = _userInfoModel.email ?? '';
     }
   }
 
@@ -112,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   File(profileProvider.pickedFile.path), width: 100, height: 100, fit: BoxFit.cover,
                                 ) :FadeInImage.assetNetwork(
                                   placeholder: Images.placeholder_image, width: 80, height: 80, fit: BoxFit.cover,
-                                  image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}/${profileProvider.userInfoModel.data.image}',
+                                  image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}/${profileProvider.userInfoModel.image}',
                                   imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder_image, width: 80, height: 80, fit: BoxFit.cover,),
                                 ),),
                                   Positioned(
@@ -135,7 +135,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             // for name
                             Center(
                                 child: Text(
-                                  '${profileProvider.userInfoModel.data.fName} ${profileProvider.userInfoModel.data.lName}',
+                                  '${profileProvider.userInfoModel.fName} ${profileProvider.userInfoModel.lName}',
                                   style: rubikMedium.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),
                                 )),
 
@@ -252,10 +252,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       String _phoneNumber = _phoneNumberController.text.trim();
                       String _password = _passwordController.text.trim();
                       String _confirmPassword = _confirmPasswordController.text.trim();
-                      if (profileProvider.userInfoModel.data.fName == _firstName &&
-                          profileProvider.userInfoModel.data.lName == _lastName &&
-                          profileProvider.userInfoModel.data.phone == _phoneNumber &&
-                          profileProvider.userInfoModel.data.email == _emailController.text && profileProvider.pickedFile == null
+                      if (profileProvider.userInfoModel.fName == _firstName &&
+                          profileProvider.userInfoModel.lName == _lastName &&
+                          profileProvider.userInfoModel.phone == _phoneNumber &&
+                          profileProvider.userInfoModel.email == _emailController.text && profileProvider.pickedFile == null
                           && _password.isEmpty && _confirmPassword.isEmpty) {
                         showCustomSnackBar(getTranslated('change_something_to_update', context), context);
                       }else if (_firstName.isEmpty) {
@@ -270,17 +270,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       } else if(_password != _confirmPassword) {
                         showCustomSnackBar(getTranslated('password_did_not_match', context), context);
                       } else {
-                        UserInfoModel updateUserInfoModel = UserInfoModel();
-                        updateUserInfoModel.data.fName = _firstName ?? "";
-                        updateUserInfoModel.data.lName = _lastName ?? "";
-                        updateUserInfoModel.data.phone = _phoneNumber ?? '';
+                        Data data = Data();
+                        data.fName = _firstName ?? "";
+                        data.lName = _lastName ?? "";
+                        data.phone = _phoneNumber ?? '';
                         String _pass = _password ?? '';
 
                         ResponseModel _responseModel = await profileProvider.updateUserInfo(
-                          updateUserInfoModel, _pass,
+                          data, _pass,
                           Provider.of<AuthProvider>(context, listen: false).getUserToken(),
                         );
-
                         if(_responseModel.isSuccess) {
                           profileProvider.getUserInfo(context);
                           showCustomSnackBar(getTranslated('updated_successfully', context), context, isError: false);
@@ -297,7 +296,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ) : Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)));
         },
-      ) :NotLoggedInScreen(isFav: false),
+      ) : NotLoggedInScreen(isFav: false),
     );
   }
 }

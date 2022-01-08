@@ -1,19 +1,16 @@
-import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
-import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/dimensions.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
-import 'package:flutter_restaurant/view/base/custom_button.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class QRCodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String _playStoreUrl='https://play.google.com/store/apps/details?id=com.thefoodstore';
+    String _appStoreUrl='https://apps.apple.com/in/app/thefoodstoreapp/id1511649515';
     return Scaffold(
       appBar: null,
       bottomSheet: Container(
@@ -22,7 +19,7 @@ class QRCodeScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
         ),
-        child: Image.asset(Images.dark_logo, width: double.infinity, height: double.infinity,),
+        //child: Image.asset(Images.dark_logo, width: double.infinity, height: double.infinity,),
       ),
       body: SafeArea(
          child:  ResponsiveHelper.isMobile(context) ? Stack(
@@ -31,27 +28,27 @@ class QRCodeScreen extends StatelessWidget {
              Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.start,
                children: [
                  SizedBox(height: 70),
-                 Text('Discover New \n THEFOODSTORE.APP' , style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE), textAlign: TextAlign.center,),
+                 Text('Download The Foodstore App' , style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE), textAlign: TextAlign.center,),
 
                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-                 Text('Get what you need, when you need it.' , style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),),
+                 Text('Good food at your fingertips!' , style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),),
                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
                  Row( crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center,children: [
                    InkWell(
                      onTap: () async {
-                       // await canLaunch(_playStoreUrl)
-                       //     ? await launch(_playStoreUrl)
-                       //     : throw 'Could not launch $_playStoreUrl';
+                       await canLaunch(_appStoreUrl)
+                           ? await launch(_appStoreUrl)
+                           : throw 'Could not launch $_appStoreUrl';
 
-                       Container(
-                         width: 100,
-                         child:  ElegantNotification(
-                           title:  "Coming Soon...",
-                           description: "The work of giving A in the AppStore is going on",
-                           icon:  Icon(Icons.access_alarm,color:  Colors.pink,),
-                           progressIndicatorColor:  Colors.green,)
-                             .show(context),
-                       );
+                       // Container(
+                       //   width: 100,
+                       //   child:  ElegantNotification(
+                       //     title:  "Coming Soon...",
+                       //     description: "The work of giving A in the AppStore is going on",
+                       //     icon:  Icon(Icons.access_alarm,color:  Colors.pink,),
+                       //     progressIndicatorColor:  Colors.green,)
+                       //       .show(context),
+                       // );
                      },
                      child: Container(
                          padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -104,7 +101,7 @@ class QRCodeScreen extends StatelessWidget {
              ),
              Positioned(
                bottom: 60,
-               right: 100,
+               right: 60,
                child: Image.asset(Images.qr_code, fit: BoxFit.cover, width: 300,),
              ),
            ],
@@ -115,27 +112,27 @@ class QRCodeScreen extends StatelessWidget {
              child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center,
                children: [
                  // SizedBox(height: 70),
-                 Text('Discover New THEFOODSTORE.APP' , style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE), textAlign: TextAlign.center,),
+                 Text('Download The Foodstore App' , style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE), textAlign: TextAlign.center,),
 
                  SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT,),
-                 Text('Get what you need, when you need it.' , style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),),
+                 Text('Good food at your fingertips!' , style: rubikRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),),
                  SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE,),
                  Row( crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center,children: [
                    InkWell(
                      onTap: () async {
-                       // await canLaunch(_playStoreUrl)
-                       //     ? await launch(_playStoreUrl)
-                       //     : throw 'Could not launch $_playStoreUrl';
+                       await canLaunch(_appStoreUrl)
+                           ? await launch(_appStoreUrl)
+                           : throw 'Could not launch $_appStoreUrl';
 
-                       Container(
-                         width: 100,
-                         child:  ElegantNotification(
-                           title:  "Coming Soon...",
-                           description: "The work of giving A in the AppStore is going on",
-                           icon:  Icon(Icons.access_alarm,color:  Colors.pink,),
-                           progressIndicatorColor:  Colors.green,)
-                             .show(context),
-                       );
+                       // Container(
+                       //   width: 100,
+                       //   child:  ElegantNotification(
+                       //     title:  "Coming Soon...",
+                       //     description: "The work of giving A in the AppStore is going on",
+                       //     icon:  Icon(Icons.access_alarm,color:  Colors.pink,),
+                       //     progressIndicatorColor:  Colors.green,)
+                       //       .show(context),
+                       // );
                      },
                      child: Container(
                          padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_DEFAULT, vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL),
@@ -185,14 +182,10 @@ class QRCodeScreen extends StatelessWidget {
                          )),),
                  ],),
                ],
-             ),
-           ),
-           Padding(
+             )), Padding(
              padding: const EdgeInsets.symmetric(horizontal: 18.0),
              child: Image.asset(Images.qr_code, fit: BoxFit.cover, width: ResponsiveHelper.isDesktop(context) ? 400 : 300,),
-           ),
-
-           ResponsiveHelper.isDesktop(context) ? SizedBox(width: 60,) : SizedBox(width: 10,),
+           ), ResponsiveHelper.isDesktop(context) ? SizedBox(width: 60,) : SizedBox(width: 10,),
          ],),
       ),
     );

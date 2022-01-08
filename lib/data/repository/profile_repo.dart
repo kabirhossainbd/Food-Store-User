@@ -44,7 +44,7 @@ class ProfileRepo{
     }
   }
 
-  Future<http.StreamedResponse> updateProfile(UserInfoModel userInfoModel, String password, PickedFile data, String token) async {
+  Future<http.StreamedResponse> updateProfile(Data proData, String password, PickedFile data, String token) async {
     http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse('${AppConstants.BASE_URL}${AppConstants.UPDATE_PROFILE_URI}'));
     request.headers.addAll(<String,String>{'Authorization': 'Bearer $token'});
     if(ResponsiveHelper.isMobilePhone() && data != null) {
@@ -60,15 +60,17 @@ class ProfileRepo{
 
     if(password.isEmpty) {
       _fields.addAll(<String, String>{
-        '_method': 'put', 'f_name': userInfoModel.data.fName, 'l_name': userInfoModel.data.lName, 'phone': userInfoModel.data.phone
+        '_method': 'put', 'f_name': proData.fName, 'l_name': proData.lName, 'phone': proData.phone
       });
     }else {
       _fields.addAll(<String, String>{
-        '_method': 'put', 'f_name': userInfoModel.data.fName, 'l_name': userInfoModel.data.lName, 'phone': userInfoModel.data.phone, 'password': password
+        '_method': 'put', 'f_name': proData.fName, 'l_name': proData.lName, 'phone': proData.phone, 'password': password
       });
     }
     request.fields.addAll(_fields);
     http.StreamedResponse response = await request.send();
     return response;
   }
+
+
 }
